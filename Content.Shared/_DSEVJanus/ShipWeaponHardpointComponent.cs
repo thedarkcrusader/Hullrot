@@ -13,7 +13,7 @@ public sealed partial class ShipWeaponHardpointComponent : Component
 {
     public EntityUid? anchoredWeapon = null;
     public float turnRate = 0.5f;
-    public List<EntityUid> LinkedComputers = new List<EntityUid>();
+    public HashSet<EntityUid> LinkedComputers = new ();
     // Prevents anyone from building a weapon console anywhere and then hijacking the ship weapons
     // and creating 20000 diplomatic blunders - SPCR 2025
     public int accesCode = 0;
