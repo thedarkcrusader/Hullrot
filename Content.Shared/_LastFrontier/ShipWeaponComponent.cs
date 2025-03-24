@@ -1,12 +1,17 @@
+using Robust.Shared.GameStates;
+
+
 namespace Content.Shared._LastFrontier;
 
 
 /// <summary>
 /// This is used for...
 /// </summary>
-[RegisterComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class ShipWeaponComponent : Component
 {
-    [NotSerializable]
     public List<EntityUid> linkedConsoles = new();
+    [AutoNetworkedField]
+    public EntityUid? anchoredTo = null;
+
 }

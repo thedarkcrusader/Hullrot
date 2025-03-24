@@ -9,6 +9,6 @@ public sealed class ShipWeaponSystem : EntitySystem
     /// <inheritdoc/>
     public override void Initialize()
     {
-        
+
     }
 }
