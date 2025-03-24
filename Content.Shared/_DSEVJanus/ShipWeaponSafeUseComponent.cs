@@ -1,4 +1,4 @@
-namespace Content.Server._LastFrontier;
+namespace Content.Server._DESVJanus;
 
 
 /// <summary>

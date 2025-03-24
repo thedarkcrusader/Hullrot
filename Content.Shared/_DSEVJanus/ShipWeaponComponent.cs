@@ -1,7 +1,7 @@
 using Robust.Shared.GameStates;
 
 
-namespace Content.Shared._LastFrontier;
+namespace Content.Shared._DSEVJanus;
 
 
 /// <summary>
