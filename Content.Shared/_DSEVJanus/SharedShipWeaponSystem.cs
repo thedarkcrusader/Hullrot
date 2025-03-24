@@ -13,14 +13,12 @@ using YamlDotNet.Core.Tokens;
 
 namespace Content.Shared._DSEVJanus;
 
-[Serializable, NetSerializable]
 public sealed class ShipWeaponAnchoredEvent : EntityEventArgs
 {
     public required EntityUid NewHardpoint;
     public required EntityUid ShipWeapon;
 }
 
-[Serializable, NetSerializable]
 public sealed class ShipWeaponUnanchoredEvent : EntityEventArgs
 {
     public required EntityUid OldHardpoint;
@@ -37,7 +35,6 @@ public class SharedShipWeaponSystem : EntitySystem
     [Dependency] public readonly SharedMapSystem _mapSystem = default!;
     [Dependency] public readonly SharedPhysicsSystem _physics = default!;
     [Dependency] public readonly SharedPowerReceiverSystem _receiving = default!;
-    [Dependency] public readonly ISawmill _sawmill = default!;
     /// <inheritdoc/>
     public override void Initialize()
     {
@@ -118,7 +115,7 @@ public class SharedShipWeaponSystem : EntitySystem
             {
                 _transformSystem.Unanchor(owner.Owner);
             }
-            _sawmill.Error($"SharedShipWeaponSystem initialized a ship weapon called {MetaData(owner.Owner).EntityName} which had no valid hardpoint to anchor to!");
+            Log.Error($"SharedShipWeaponSystem initialized a ship weapon called {MetaData(owner.Owner).EntityName} which had no valid hardpoint to anchor to!");
             return;
         }
     }

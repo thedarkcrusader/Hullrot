@@ -5,7 +5,7 @@ namespace Content.Shared._DSEVJanus;
 /// This is used for...
 /// </summary>
 [RegisterComponent]
-public sealed partial class ShipWeaponConsole : Component
+public sealed partial class ShipWeaponConsoleComponent : Component
 {
     public HashSet<EntityUid> linkedHardpoints = new ();
 
