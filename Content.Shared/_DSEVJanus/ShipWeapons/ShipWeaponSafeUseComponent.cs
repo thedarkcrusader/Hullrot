@@ -13,11 +13,6 @@ public class AnglePair
 [RegisterComponent]
 public sealed partial class ShipWeaponSafeUseComponent : Component
 {
-    public class AnglePair
-    {
-        public Angle first;
-        public Angle second;
-    }
     public List<AnglePair> safeAngles = new ();
 
 }

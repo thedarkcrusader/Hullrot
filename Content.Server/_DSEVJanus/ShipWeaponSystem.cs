@@ -1,7 +1,9 @@
 using System.Numerics;
 using Content.Shared._DSEVJanus;
+using Content.Shared.Physics;
 using Robust.Server.GameObjects;
 using Robust.Shared.Physics;
+using Robust.Shared.Physics.Dynamics;
 using Vector4 = Robust.Shared.Maths.Vector4;
 
 
@@ -21,7 +23,7 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
         SubscribeLocalEvent<ShipWeaponHardpointComponent,ShipWeaponUnanchoredEvent>(onHardpointUnanchorWeapon);
     }
 
-    public List<AnglePair> generateSafeFiringArcs(Entity<ShipWeaponSafeUseComponent> weapon, float maxRange, int collisionMask)
+    public List<AnglePair> generateSafeFiringArcs(Entity<ShipWeaponSafeUseComponent> weapon, float maxRange, CollisionGroup collisionMask)
     {
         List<AnglePair> anglePairs = new List<AnglePair>();
         List<JanusSlice> slices = new List<JanusSlice>();
@@ -40,7 +42,7 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                 if (!fixture.Hard)
                     continue;
                 // Not relevant
-                if ((fixture.CollisionMask & collisionMask) == 0)
+                if ((fixture.CollisionMask & (int)collisionMask) == 0)
                     continue;
                 // the child index is just a leftover for some reason - SPCR 2025
                 var box = fixture.Shape.ComputeAABB(_physics.GetLocalPhysicsTransform(entity, transform), 0);
@@ -95,13 +97,16 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
             i++;
         }
         foreach (var slice in slices)
-            anglePairs.Add(new AnglePair(){first = slice.Angle.Angle, second =  (slice.Angle + slice.Radius).Angle});
+            anglePairs.Add(new AnglePair(){first = slice.Angle.Angle, second = (slice.Angle + slice.Radius).Angle});
         return anglePairs;
     }
 
     public void onHardpointAnchorWeapon(Entity<ShipWeaponHardpointComponent> owner, ref ShipWeaponAnchoredEvent args)
     {
-
+        var comp = EnsureComp<ShipWeaponSafeUseComponent>(args.ShipWeapon);
+        comp.safeAngles = generateSafeFiringArcs(new Entity<ShipWeaponSafeUseComponent>(args.ShipWeapon, comp),
+            35,
+            CollisionGroup.BulletImpassable);
     }
 
     public void onHardpointUnanchorWeapon(Entity<ShipWeaponHardpointComponent> owner, ref ShipWeaponUnanchoredEvent args)
