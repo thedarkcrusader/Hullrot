@@ -54,6 +54,10 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                 angles.Add(new JanusAngle(new Vector2(topPoints.Z, topPoints.W).ToWorldAngle()));
                 angles.Add(new JanusAngle(new Vector2(bottomPoints.X, bottomPoints.Y).ToWorldAngle()));
                 angles.Add(new JanusAngle(new Vector2(bottomPoints.Z, bottomPoints.W).ToWorldAngle()));
+                Log.Warning($"Angle 1 is : {angles[0].Angle}");
+                Log.Warning($"Angle 2 is : {angles[1].Angle}");
+                Log.Warning($"Angle 3 is : {angles[2].Angle}");
+                Log.Warning($"Angle 4 is : {angles[3].Angle}");
                 JanusAngle biggestStart = new JanusAngle(Angle.Zero);
                 JanusAngle biggestRadius = new JanusAngle(Angle.Zero);
                 foreach (var angle in angles)
@@ -72,17 +76,26 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
 
         }
 
-        List<JanusSlice> finalSlices = new();
-        for (var i = 0; i < slices.Count; i++)
+        var i = 0;
+        var j = 0;
+        while (i < slices.Count)
         {
-            for (var j = i; j < slices.Count; j++)
+            j = i+1;
+            while (j < slices.Count)
             {
                 if (slices[i].overlap(slices[j]) != 0)
                 {
                     slices[i].Merge(slices[j]);
+                    slices.RemoveAt(j);
+                    continue;
                 }
+                j++;
             }
+
+            i++;
         }
+        foreach (var slice in slices)
+            anglePairs.Add(new AnglePair(){first = slice.Angle.Angle, second =  (slice.Angle + slice.Radius).Angle});
         return anglePairs;
     }
 
