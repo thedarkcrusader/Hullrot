@@ -51,12 +51,14 @@ public class SharedShipWeaponSystem : EntitySystem
         var grid = _transformSystem.GetGrid(owner.Owner);
         if (grid is null)
         {
-            args.Cancel(); return;
+            args.Cancel();
+            return;
         }
         var gridComp = Comp<MapGridComponent>(grid.Value);
         if (!_transformSystem.TryGetGridTilePosition(owner.Owner, out var tilePosition, gridComp))
         {
-            args.Cancel(); return;
+            args.Cancel();
+            return;
         }
         if (GetHardpoints(tilePosition, new Entity<MapGridComponent>(grid.Value, gridComp)).Count != 0)
         {
@@ -147,7 +149,7 @@ public class SharedShipWeaponSystem : EntitySystem
         _physics.SetBodyType(weapon.Owner, BodyType.Static, body: physics);
         _transformSystem.SetLocalRotation(weapon.Owner, Transform(anchor.Owner).LocalRotation);
         _transformSystem.SetParent(weapon.Owner, anchor.Owner);
-        _transformSystem.AnchorEntity(weapon.Owner);
+        //_transformSystem.AnchorEntity(weapon.Owner);
         ShipWeaponAnchoredEvent ev = new ShipWeaponAnchoredEvent()
         {
             NewHardpoint = anchor.Owner,
