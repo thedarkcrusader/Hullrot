@@ -105,7 +105,7 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
         var comp = EnsureComp<ShipWeaponSafeUseComponent>(args.ShipWeapon);
         comp.safeAngles = generateSafeFiringArcs(new Entity<ShipWeaponSafeUseComponent>(args.ShipWeapon, comp),
             35,
-            CollisionGroup.BulletImpassable);
+            CollisionGroup.Impassable);
     }
 
     public void onHardpointUnanchorWeapon(Entity<ShipWeaponHardpointComponent> owner, ref ShipWeaponUnanchoredEvent args)
