@@ -103,14 +103,16 @@ public class SharedShipWeaponSystem : EntitySystem
         var mill = _logManager.RootSawmill;
         if (args.Anchored)
         {
-            if(!TryAnchorToAnyHardpoint(owner))
+            if (!TryAnchorToAnyHardpoint(owner))
+            {
                 _transformSystem.Unanchor(owner.Owner);
-            mill.Warning("Attached");
+                return;
+            }
+
             return;
         }
         if (owner.Comp.anchoredTo is null)
             return;
-        mill.Warning("Detached");
 
         Unanchor(owner, new Entity<ShipWeaponHardpointComponent>(owner.Comp.anchoredTo.Value, Comp<ShipWeaponHardpointComponent>(owner.Comp.anchoredTo.Value)));
     }
@@ -146,13 +148,13 @@ public class SharedShipWeaponSystem : EntitySystem
 
     private void Anchor(Entity<ShipWeaponComponent> weapon, Entity<ShipWeaponHardpointComponent> anchor)
     {
-        var physics = Comp<PhysicsComponent>(weapon.Owner);
+        //var physics = Comp<PhysicsComponent>(weapon.Owner);
         weapon.Comp.anchoredTo = anchor.Owner;
         anchor.Comp.anchoredWeapon = weapon.Owner;
-        _physics.SetLinearVelocity(weapon.Owner, Vector2.Zero, body: physics);
-        _physics.SetBodyType(weapon.Owner, BodyType.Static, body: physics);
+        //_physics.SetLinearVelocity(weapon.Owner, Vector2.Zero, body: physics);
+        //_physics.SetBodyType(weapon.Owner, BodyType.Static, body: physics);
         _transformSystem.SetLocalRotation(weapon.Owner, Transform(anchor.Owner).LocalRotation);
-        _transformSystem.SetParent(weapon.Owner, Transform(weapon.Owner),anchor.Owner);
+        //_transformSystem.SetParent(weapon.Owner, Transform(weapon.Owner),anchor.Owner);
         //_transformSystem.AnchorEntity(weapon.Owner);
         ShipWeaponAnchoredEvent ev = new ShipWeaponAnchoredEvent()
         {
@@ -167,9 +169,9 @@ public class SharedShipWeaponSystem : EntitySystem
         var physics = Comp<PhysicsComponent>(weapon.Owner);
         weapon.Comp.anchoredTo = null;
         anchor.Comp.anchoredWeapon = null;
-        _physics.SetBodyType(weapon.Owner, BodyType.Dynamic, body: physics);
-        _transformSystem.AttachToGridOrMap(weapon.Owner);
-        _transformSystem.Unanchor(weapon.Owner);
+        //.SetBodyType(weapon.Owner, BodyType.Dynamic, body: physics);
+        //_transformSystem.AttachToGridOrMap(weapon.Owner);
+        //_transformSystem.Unanchor(weapon.Owner);
         ShipWeaponUnanchoredEvent ev = new ShipWeaponUnanchoredEvent()
         {
             OldHardpoint = anchor.Owner,
