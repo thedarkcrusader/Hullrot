@@ -35,6 +35,7 @@ public class SharedShipWeaponSystem : EntitySystem
     [Dependency] public readonly SharedMapSystem _mapSystem = default!;
     [Dependency] public readonly SharedPhysicsSystem _physics = default!;
     [Dependency] public readonly SharedPowerReceiverSystem _receiving = default!;
+    [Dependency] public readonly ILogManager _logManager = default!;
     /// <inheritdoc/>
     public override void Initialize()
     {
@@ -99,15 +100,18 @@ public class SharedShipWeaponSystem : EntitySystem
 
     private void onWeaponAnchorStateChanged(Entity<ShipWeaponComponent> owner, ref AnchorStateChangedEvent args)
     {
+        var mill = _logManager.RootSawmill;
         if (args.Anchored)
         {
             if(!TryAnchorToAnyHardpoint(owner))
                 _transformSystem.Unanchor(owner.Owner);
+            mill.Warning("Attached");
             return;
         }
-
         if (owner.Comp.anchoredTo is null)
             return;
+        mill.Warning("Detached");
+
         Unanchor(owner, new Entity<ShipWeaponHardpointComponent>(owner.Comp.anchoredTo.Value, Comp<ShipWeaponHardpointComponent>(owner.Comp.anchoredTo.Value)));
     }
 
@@ -148,7 +152,7 @@ public class SharedShipWeaponSystem : EntitySystem
         _physics.SetLinearVelocity(weapon.Owner, Vector2.Zero, body: physics);
         _physics.SetBodyType(weapon.Owner, BodyType.Static, body: physics);
         _transformSystem.SetLocalRotation(weapon.Owner, Transform(anchor.Owner).LocalRotation);
-        _transformSystem.SetParent(weapon.Owner, anchor.Owner);
+        _transformSystem.SetParent(weapon.Owner, Transform(weapon.Owner),anchor.Owner);
         //_transformSystem.AnchorEntity(weapon.Owner);
         ShipWeaponAnchoredEvent ev = new ShipWeaponAnchoredEvent()
         {
