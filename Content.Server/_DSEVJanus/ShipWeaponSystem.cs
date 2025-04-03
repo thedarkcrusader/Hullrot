@@ -30,12 +30,11 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
         foreach (var entity in _lookupSystem.GetEntitiesInRange(
             weapon.Owner,
             maxRange,
-            LookupFlags.Dynamic | LookupFlags.Static))
+           LookupFlags.Static))
         {
             if(!TryComp<FixturesComponent>(entity, out var fixtures))
                 continue;
-            if (!TryComp<TransformComponent>(entity, out var transform))
-                continue;
+            var transform = Transform(entity);
             var worldPosition = _transformSystem.GetWorldPosition(transform);
             foreach (var (key, fixture) in fixtures.Fixtures)
             {
@@ -56,10 +55,10 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                 angles.Add(new JanusAngle(new Vector2(topPoints.Z, topPoints.W).ToWorldAngle()));
                 angles.Add(new JanusAngle(new Vector2(bottomPoints.X, bottomPoints.Y).ToWorldAngle()));
                 angles.Add(new JanusAngle(new Vector2(bottomPoints.Z, bottomPoints.W).ToWorldAngle()));
-                Log.Warning($"Angle 1 is : {angles[0].Angle}");
-                Log.Warning($"Angle 2 is : {angles[1].Angle}");
-                Log.Warning($"Angle 3 is : {angles[2].Angle}");
-                Log.Warning($"Angle 4 is : {angles[3].Angle}");
+                Logger.Warning($"Angle 1 is : {angles[0].Angle}");
+                Logger.Warning($"Angle 2 is : {angles[1].Angle}");
+                Logger.Warning($"Angle 3 is : {angles[2].Angle}");
+                Logger.Warning($"Angle 4 is : {angles[3].Angle}");
                 JanusAngle biggestStart = new JanusAngle(Angle.Zero);
                 JanusAngle biggestRadius = new JanusAngle(Angle.Zero);
                 foreach (var angle in angles)
