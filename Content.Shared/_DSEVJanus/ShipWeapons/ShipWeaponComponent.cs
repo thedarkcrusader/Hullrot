@@ -10,8 +10,9 @@ namespace Content.Shared._DSEVJanus;
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class ShipWeaponComponent : Component
 {
+    [DataField]
     public HashSet<EntityUid> linkedConsoles = new();
-    [AutoNetworkedField]
+    [AutoNetworkedField, DataField]
     public EntityUid? anchoredTo = null;
 
 }

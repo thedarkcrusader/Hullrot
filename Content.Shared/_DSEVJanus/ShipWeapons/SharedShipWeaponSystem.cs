@@ -71,6 +71,8 @@ public class SharedShipWeaponSystem : EntitySystem
 
     private void onHardpointAnchorStateChanged(Entity<ShipWeaponHardpointComponent> owner, ref AnchorStateChangedEvent args)
     {
+        if (args.Anchored)
+            return;
         if(owner.Comp.anchoredWeapon is not null && !TerminatingOrDeleted(owner.Comp.anchoredWeapon))
             Unanchor(new Entity<ShipWeaponComponent>(owner.Comp.anchoredWeapon.Value, Comp<ShipWeaponComponent>(owner.Comp.anchoredWeapon.Value)), owner);
     }
@@ -145,6 +147,7 @@ public class SharedShipWeaponSystem : EntitySystem
         _physics.SetBodyType(weapon.Owner, BodyType.Static, body: physics);
         _transformSystem.SetLocalRotation(weapon.Owner, Transform(anchor.Owner).LocalRotation);
         _transformSystem.SetParent(weapon.Owner, anchor.Owner);
+        _transformSystem.AnchorEntity(weapon.Owner);
         ShipWeaponAnchoredEvent ev = new ShipWeaponAnchoredEvent()
         {
             NewHardpoint = anchor.Owner,
@@ -160,6 +163,7 @@ public class SharedShipWeaponSystem : EntitySystem
         anchor.Comp.anchoredWeapon = null;
         _physics.SetBodyType(weapon.Owner, BodyType.Dynamic, body: physics);
         _transformSystem.AttachToGridOrMap(weapon.Owner);
+        _transformSystem.Unanchor(weapon.Owner);
         ShipWeaponUnanchoredEvent ev = new ShipWeaponUnanchoredEvent()
         {
             OldHardpoint = anchor.Owner,
