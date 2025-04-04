@@ -66,20 +66,17 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                 angles.Add(new JanusAngle(Angle.FromWorldVec(new Vector2(topPoints.Z, topPoints.W)).Reduced()));
                 angles.Add(new JanusAngle(Angle.FromWorldVec(new Vector2(bottomPoints.X, bottomPoints.Y)).Reduced()));
                 angles.Add(new JanusAngle(Angle.FromWorldVec(new Vector2(bottomPoints.Z, bottomPoints.W)).Reduced()));
-                Logger.Warning($"Angle 1 is : {angles[0].Angle}");
-                Logger.Warning($"Angle 2 is : {angles[1].Angle}");
-                Logger.Warning($"Angle 3 is : {angles[2].Angle}");
-                Logger.Warning($"Angle 4 is : {angles[3].Angle}");
                 JanusAngle biggestStart = new JanusAngle(Angle.Zero);
                 JanusAngle biggestRadius = new JanusAngle(Angle.Zero);
-
                 foreach (var angle in angles)
                 {
                     foreach (var others in angles)
                     {
+                        if (angle.ClosestTurn(others) <= 0)
+                            continue;
                         if (angle - others > biggestRadius)
                         {
-                            Logger.Warning($"Substracting angles to get the radius {angle.Angle} and {others.Angle} gives us {(angle - others).Angle}" );
+                            Logger.Warning($"Set to new slice , starting at {biggestStart.Angle} , and a radius of {biggestRadius.Angle}" );
                             biggestRadius = angle - others;
                             biggestStart = others;
                         }
@@ -117,7 +114,7 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
     {
         var comp = EnsureComp<ShipWeaponSafeUseComponent>(args.ShipWeapon);
         comp.safeAngles = generateSafeFiringArcs(new Entity<ShipWeaponSafeUseComponent>(args.ShipWeapon, comp),
-            35,
+            5,
             CollisionGroup.Impassable);
     }
 

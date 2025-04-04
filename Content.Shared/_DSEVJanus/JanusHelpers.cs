@@ -26,26 +26,22 @@ public class JanusAngle
 
     public static JanusAngle operator +(JanusAngle a, JanusAngle b)
     {
-        a.Angle += b.Angle;
-        return a;
+        return new JanusAngle(a.Angle + b.Angle);
     }
 
     public static JanusAngle operator -(JanusAngle a, JanusAngle b)
     {
-        a.Angle -= b.Angle;
-        return a;
+        return new JanusAngle(a.Angle - b.Angle);
     }
 
     public static JanusAngle operator +(JanusAngle a, Angle b)
     {
-        a.Angle += b;
-        return a;
+        return new JanusAngle(a.Angle + b);
     }
 
     public static JanusAngle operator -(JanusAngle a, Angle b)
     {
-        a.Angle += b;
-        return a;
+        return new JanusAngle(a.Angle - b);
     }
 
     public static bool operator >(JanusAngle a, JanusAngle b)
@@ -64,6 +60,8 @@ public class JanusAngle
     // returns wheter a rotation should be positive or negative to reach the targetAngle -1 is clock-wise , 1 is counter clock wise
     public int ClosestTurn(JanusAngle targetAngle)
     {
+        if (this == targetAngle)
+            return 0;
         if (Math.Abs((targetAngle.Angle - Angle).Reduced()) < Math.Abs((targetAngle.Angle + Angle).Reduced()))
             return -1;
         return 1;
