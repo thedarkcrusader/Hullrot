@@ -27,6 +27,12 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
     {
         List<AnglePair> anglePairs = new List<AnglePair>();
         List<JanusSlice> slices = new List<JanusSlice>();
+        var weaponPosition = _transformSystem.GetWorldPosition(weapon.Owner);
+        Vector4 weaponPosSubstractor = new Vector4(
+            weaponPosition.X,
+            weaponPosition.Y,
+            weaponPosition.X,
+            weaponPosition.Y);
         foreach (var entity in _lookupSystem.GetEntitiesInRange(
             weapon.Owner,
             maxRange,
@@ -48,25 +54,32 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                 Vector4 topPoints = new Vector4(box.Left, box.Top, box.Right, box.Top);
                 Vector4 bottomPoints = new Vector4(box.Right, box.Bottom, box.Left, box.Bottom);
                 Vector4 objectPos = new Vector4(worldPosition.X, worldPosition.Y, worldPosition.X, worldPosition.Y);
-                topPoints = objectPos - topPoints;
-                bottomPoints = objectPos - bottomPoints;
-                List<JanusAngle> angles = new List<JanusAngle>();
-                angles.Add(new JanusAngle(new Vector2(topPoints.X, topPoints.Y).ToWorldAngle()));
-                angles.Add(new JanusAngle(new Vector2(topPoints.Z, topPoints.W).ToWorldAngle()));
-                angles.Add(new JanusAngle(new Vector2(bottomPoints.X, bottomPoints.Y).ToWorldAngle()));
-                angles.Add(new JanusAngle(new Vector2(bottomPoints.Z, bottomPoints.W).ToWorldAngle()));
+                //Logger.Warning($"Object pos is {worldPosition.X} {worldPosition.Y}");
+                objectPos = weaponPosSubstractor - objectPos;
+                //Logger.Warning($"substracted pos is {objectPos.X} {objectPos.Y}");
+                topPoints = objectPos + topPoints;
+                //Logger.Warning($"Top points are :  {topPoints.X} {topPoints.Y}  and {topPoints.Z} {topPoints.W}");
+                bottomPoints = objectPos + bottomPoints;
+                //Logger.Warning($"Bottom points are :  {bottomPoints.X} {bottomPoints.Y}  and {bottomPoints.Z} {bottomPoints.W}");
+                var angles = new List<JanusAngle>();
+                angles.Add(new JanusAngle(Angle.FromWorldVec(new Vector2(topPoints.X, topPoints.Y)).Reduced()));
+                angles.Add(new JanusAngle(Angle.FromWorldVec(new Vector2(topPoints.Z, topPoints.W)).Reduced()));
+                angles.Add(new JanusAngle(Angle.FromWorldVec(new Vector2(bottomPoints.X, bottomPoints.Y)).Reduced()));
+                angles.Add(new JanusAngle(Angle.FromWorldVec(new Vector2(bottomPoints.Z, bottomPoints.W)).Reduced()));
                 Logger.Warning($"Angle 1 is : {angles[0].Angle}");
                 Logger.Warning($"Angle 2 is : {angles[1].Angle}");
                 Logger.Warning($"Angle 3 is : {angles[2].Angle}");
                 Logger.Warning($"Angle 4 is : {angles[3].Angle}");
                 JanusAngle biggestStart = new JanusAngle(Angle.Zero);
                 JanusAngle biggestRadius = new JanusAngle(Angle.Zero);
+
                 foreach (var angle in angles)
                 {
                     foreach (var others in angles)
                     {
                         if (angle - others > biggestRadius)
                         {
+                            Logger.Warning($"Substracting angles to get the radius {angle.Angle} and {others.Angle} gives us {(angle - others).Angle}" );
                             biggestRadius = angle - others;
                             biggestStart = others;
                         }
