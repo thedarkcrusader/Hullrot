@@ -1,3 +1,4 @@
+using Robust.Shared.GameStates;
 using Robust.Shared.Serialization;
 
 
@@ -16,10 +17,10 @@ public class AnglePair
     [DataField]
     public Angle second;
 }
-[RegisterComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class ShipWeaponSafeUseComponent : Component
 {
-    [DataField]
+    [DataField, AutoNetworkedField]
     public List<AnglePair> safeAngles = new ();
 
 }

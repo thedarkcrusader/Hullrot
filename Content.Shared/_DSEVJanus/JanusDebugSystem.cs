@@ -12,7 +12,7 @@ public sealed class JanusDebugSystem : EntitySystem
         var enumerator = EntityManager.EntityQueryEnumerator<JanusDebugComponent>();
         while (enumerator.MoveNext(out var uid, out var comp))
         {
-            comp.JanusAngle = new JanusAngle(transformSystem.GetWorldRotation(uid)).Angle;
+            comp.JanusAngle = JanusAngle.Get(transformSystem.GetWorldRotation(uid));
         }
     }
 }

@@ -61,52 +61,39 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                 //Logger.Warning($"Top points are :  {topPoints.X} {topPoints.Y}  and {topPoints.Z} {topPoints.W}");
                 bottomPoints = objectPos + bottomPoints;
                 //Logger.Warning($"Bottom points are :  {bottomPoints.X} {bottomPoints.Y}  and {bottomPoints.Z} {bottomPoints.W}");
-                var angles = new List<JanusAngle>();
-                angles.Add(new JanusAngle(Angle.FromWorldVec(new Vector2(topPoints.X, topPoints.Y)).Reduced()));
-                angles.Add(new JanusAngle(Angle.FromWorldVec(new Vector2(topPoints.Z, topPoints.W)).Reduced()));
-                angles.Add(new JanusAngle(Angle.FromWorldVec(new Vector2(bottomPoints.X, bottomPoints.Y)).Reduced()));
-                angles.Add(new JanusAngle(Angle.FromWorldVec(new Vector2(bottomPoints.Z, bottomPoints.W)).Reduced()));
-                JanusAngle biggestStart = new JanusAngle(Angle.Zero);
-                JanusAngle biggestRadius = new JanusAngle(Angle.Zero);
+                var angles = new List<Angle>();
+                angles.Add(JanusAngle.Get(Angle.FromWorldVec(new Vector2(topPoints.X, topPoints.Y)).Reduced()));
+                angles.Add(JanusAngle.Get(Angle.FromWorldVec(new Vector2(topPoints.Z, topPoints.W)).Reduced()));
+                angles.Add(JanusAngle.Get(Angle.FromWorldVec(new Vector2(bottomPoints.X, bottomPoints.Y)).Reduced()));
+                angles.Add(JanusAngle.Get(Angle.FromWorldVec(new Vector2(bottomPoints.Z, bottomPoints.W)).Reduced()));
+                Angle biggestStart = JanusAngle.Get(Angle.Zero);
+                Angle biggestRadius = JanusAngle.Get(Angle.Zero);
+                foreach (var angle in angles)
+                {
+                    Logger.Warning($"Angle : {angle.Degrees}");
+                }
                 foreach (var angle in angles)
                 {
                     foreach (var others in angles)
                     {
-                        if (angle.ClosestTurn(others) <= 0)
+                        if (JanusAngle.ClosestTurn(others, angle) < 0)
                             continue;
-                        if (angle - others > biggestRadius)
+                        Logger.Warning($"Comparing {(angle - others).Degrees}");
+                        if (others - angle> biggestRadius)
                         {
-                            Logger.Warning($"Set to new slice , starting at {biggestStart.Angle} , and a radius of {biggestRadius.Angle}" );
-                            biggestRadius = angle - others;
+                            biggestRadius = JanusAngle.PositiveDifference(others, angle);
                             biggestStart = others;
                         }
                     }
                 }
+                Logger.Warning($"Obtained slice  , starting at {biggestStart.Degrees} and a radius of {biggestRadius.Degrees}");
                 slices.Add(new JanusSlice(){Angle = biggestStart, Radius = biggestRadius});
             }
 
         }
 
-        var i = 0;
-        var j = 0;
-        while (i < slices.Count)
-        {
-            j = i+1;
-            while (j < slices.Count)
-            {
-                if (slices[i].overlap(slices[j]) != 0)
-                {
-                    slices[i].Merge(slices[j]);
-                    slices.RemoveAt(j);
-                    continue;
-                }
-                j++;
-            }
-
-            i++;
-        }
         foreach (var slice in slices)
-            anglePairs.Add(new AnglePair(){first = slice.Angle.Angle, second = (slice.Angle + slice.Radius).Angle});
+            anglePairs.Add(new AnglePair(){first = slice.Angle, second = (slice.Angle + slice.Radius)});
         return anglePairs;
     }
 
@@ -116,6 +103,7 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
         comp.safeAngles = generateSafeFiringArcs(new Entity<ShipWeaponSafeUseComponent>(args.ShipWeapon, comp),
             5,
             CollisionGroup.Impassable);
+        Dirty(args.ShipWeapon, comp);
     }
 
     public void onHardpointUnanchorWeapon(Entity<ShipWeaponHardpointComponent> owner, ref ShipWeaponUnanchoredEvent args)
