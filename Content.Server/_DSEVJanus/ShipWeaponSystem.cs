@@ -62,11 +62,9 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                 Logger.Warning($"Obtained relative pos {objectPos.X}, {objectPos.Y} ");
                 //Logger.Warning($"substracted pos is {objectPos.X} {objectPos.Y}");
                 topPoints -= weaponPosSubstractor;
-                topPoints += Vector4.One;
                 Logger.Warning($"Top Points 1 : {topPoints.X}, {topPoints.Y}, 2 : {topPoints.Z}, {topPoints.W}");
                 //Logger.Warning($"Top points are :  {topPoints.X} {topPoints.Y}  and {topPoints.Z} {topPoints.W}");
                 bottomPoints -= weaponPosSubstractor;
-                bottomPoints += Vector4.One;
                 Logger.Warning($"Bottom point 1 : {bottomPoints.X}, {bottomPoints.Y} 2 {bottomPoints.Z}, {bottomPoints.W}");
                 //Logger.Warning($"Bottom points are :  {bottomPoints.X} {bottomPoints.Y}  and {bottomPoints.Z} {bottomPoints.W}");
                 var angles = new List<Angle>();
@@ -75,6 +73,7 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                 angles.Add(JanusAngle.Get(Angle.FromWorldVec(new Vector2(bottomPoints.X, bottomPoints.Y)).Reduced()));
                 angles.Add(JanusAngle.Get(Angle.FromWorldVec(new Vector2(bottomPoints.Z, bottomPoints.W)).Reduced()));
                 Angle biggestStart = JanusAngle.Get(Angle.Zero);
+                Angle biggestEnd = JanusAngle.Get(Angle.Zero);
                 Angle biggestRadius = JanusAngle.Get(Angle.Zero);
                 /*
                 foreach (var angle in angles)
@@ -93,17 +92,16 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                         {
                             biggestRadius = JanusAngle.PositiveDifference(others, angle);
                             biggestStart = others;
+                            biggestEnd = angle;
                         }
                     }
                 }
                 //Logger.Warning($"Obtained slice  , starting at {biggestStart.Degrees} and a radius of {biggestRadius.Degrees}");
-                slices.Add(new JanusSlice(){Angle = biggestStart, Radius = biggestRadius});
+                anglePairs.Add(new AnglePair(){first = biggestStart, second = biggestEnd});
             }
 
         }
 
-        foreach (var slice in slices)
-            anglePairs.Add(new AnglePair(){first = slice.Angle, second = (slice.Angle + slice.Radius)});
         return anglePairs;
     }
 
