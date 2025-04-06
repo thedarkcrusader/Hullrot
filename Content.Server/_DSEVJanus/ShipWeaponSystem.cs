@@ -51,21 +51,21 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                     continue;
                 // the child index is just a leftover for some reason - SPCR 2025
                 var box = fixture.Shape.ComputeAABB(_physics.GetPhysicsTransform(entity, transform), 0);
-                Logger.Warning($"Calculated box bounds");
-                Logger.Warning($"Top left : {box.Left} {box.Top} , Right : {box.Right} {box.Top}");
-                Logger.Warning($"Bottom right : {box.Left} {box.Bottom} , Right : {box.Right} {box.Bottom}");
+                //Logger.Warning($"Calculated box bounds");
+                //Logger.Warning($"Top left : {box.Left} {box.Top} , Right : {box.Right} {box.Top}");
+                //Logger.Warning($"Bottom right : {box.Left} {box.Bottom} , Right : {box.Right} {box.Bottom}");
                 Vector4 topPoints = new Vector4(box.Left, box.Top, box.Right, box.Top);
                 Vector4 bottomPoints = new Vector4(box.Right, box.Bottom, box.Left, box.Bottom);
                 Vector4 objectPos = new Vector4(worldPosition.X, worldPosition.Y, worldPosition.X, worldPosition.Y);
                 //Logger.Warning($"Object pos is {worldPosition.X} {worldPosition.Y}");
                 objectPos = weaponPosSubstractor - objectPos;
-                Logger.Warning($"Obtained relative pos {objectPos.X}, {objectPos.Y} ");
+                //Logger.Warning($"Obtained relative pos {objectPos.X}, {objectPos.Y} ");
                 //Logger.Warning($"substracted pos is {objectPos.X} {objectPos.Y}");
                 topPoints -= weaponPosSubstractor;
-                Logger.Warning($"Top Points 1 : {topPoints.X}, {topPoints.Y}, 2 : {topPoints.Z}, {topPoints.W}");
+                //Logger.Warning($"Top Points 1 : {topPoints.X}, {topPoints.Y}, 2 : {topPoints.Z}, {topPoints.W}");
                 //Logger.Warning($"Top points are :  {topPoints.X} {topPoints.Y}  and {topPoints.Z} {topPoints.W}");
                 bottomPoints -= weaponPosSubstractor;
-                Logger.Warning($"Bottom point 1 : {bottomPoints.X}, {bottomPoints.Y} 2 {bottomPoints.Z}, {bottomPoints.W}");
+                //Logger.Warning($"Bottom point 1 : {bottomPoints.X}, {bottomPoints.Y} 2 {bottomPoints.Z}, {bottomPoints.W}");
                 //Logger.Warning($"Bottom points are :  {bottomPoints.X} {bottomPoints.Y}  and {bottomPoints.Z} {bottomPoints.W}");
                 var angles = new List<Angle>();
                 angles.Add(JanusAngle.Get(Angle.FromWorldVec(new Vector2(topPoints.X, topPoints.Y)).Reduced()));
@@ -85,12 +85,12 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                 {
                     foreach (var others in angles)
                     {
-                        if (JanusAngle.ClosestTurn(others, angle) < 0)
-                            continue;
-                        //Logger.Warning($"Comparing {(others - angle).Degrees}");
+                        //if (JanusAngle.ClosestTurn(others, angle) < 0)
+                        //    continue;
+                        Logger.Warning($"Comparing {(others - angle).Degrees}");
                         if (others - angle> biggestRadius)
                         {
-                            biggestRadius = JanusAngle.PositiveDifference(others, angle);
+                            biggestRadius = others - angle;
                             biggestStart = others;
                             biggestEnd = angle;
                         }
