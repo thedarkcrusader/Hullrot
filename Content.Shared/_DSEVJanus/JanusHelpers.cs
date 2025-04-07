@@ -29,13 +29,16 @@ public static class JanusAngle
         return -1;
     }
 
-    // returns the acute angle between 2 angles. Will be positive if counter clockwise , negative other wise. Fails in some cases
+    // returns the acute angle between 2 angles. Will be positive if counter clockwise , negative other wise.
     public static Angle ClosestDifference(Angle starting, Angle target)
     {
         Angle acute = (target - starting).Reduced();
         if (Math.Abs(acute.Theta) > Math.PI)
-            acute = double.Sign(acute.Theta) * 2 * Math.PI - acute.Theta;
-        return acute;
+        {
+            Logger.Warning($"$Converting {acute.Degrees} degrees to ${(2 * Math.PI - Math.Abs(acute.Theta)) * 180 / Math.PI} !");
+            acute = new Angle(2 * Math.PI - Math.Abs(acute.Theta));
+        }
+    return acute;
     }
     // this ensures the  2 angles are properly put in counter-clockwise
     public static JanusSlice CounterClockSlice(Angle first, Angle second)
@@ -43,13 +46,14 @@ public static class JanusAngle
         JanusSlice slice = new JanusSlice()
         {
             Angle = first,
-            Radius = second - first,
+            Radius = ClosestDifference(first, second),
         };
+
         if (slice.Radius < 0)
         {
             slice.Angle = second;
-            slice.Radius *= -1;
-        }
+            slice.Radius = ClosestDifference(second, first);
+        } // case of wrap-around
         return slice;
     }
 

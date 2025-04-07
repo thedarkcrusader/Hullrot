@@ -98,7 +98,9 @@ namespace Content.Client.__CEVJanus
                         handle.DrawLine(from, first, Color.Green);
                         Vector2 second = from + (anglePair.second).ToWorldVec() * 3;
                         handle.DrawLine(from, second, Color.Red);
+                        // end
                         handle.DrawLine(second, (second+first)/2, Color.Black);
+                        // start
                         handle.DrawLine((second + first)/2, first, Color.White);
 
                     }

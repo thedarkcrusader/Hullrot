@@ -51,22 +51,10 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                     continue;
                 // the child index is just a leftover for some reason - SPCR 2025
                 var box = fixture.Shape.ComputeAABB(_physics.GetPhysicsTransform(entity, transform), 0);
-                //Logger.Warning($"Calculated box bounds");
-                //Logger.Warning($"Top left : {box.Left} {box.Top} , Right : {box.Right} {box.Top}");
-                //Logger.Warning($"Bottom right : {box.Left} {box.Bottom} , Right : {box.Right} {box.Bottom}");
                 Vector4 topPoints = new Vector4(box.Left, box.Top, box.Right, box.Top);
                 Vector4 bottomPoints = new Vector4(box.Right, box.Bottom, box.Left, box.Bottom);
-                Vector4 objectPos = new Vector4(worldPosition.X, worldPosition.Y, worldPosition.X, worldPosition.Y);
-                //Logger.Warning($"Object pos is {worldPosition.X} {worldPosition.Y}");
-                objectPos = weaponPosSubstractor - objectPos;
-                //Logger.Warning($"Obtained relative pos {objectPos.X}, {objectPos.Y} ");
-                //Logger.Warning($"substracted pos is {objectPos.X} {objectPos.Y}");
                 topPoints -= weaponPosSubstractor;
-                //Logger.Warning($"Top Points 1 : {topPoints.X}, {topPoints.Y}, 2 : {topPoints.Z}, {topPoints.W}");
-                //Logger.Warning($"Top points are :  {topPoints.X} {topPoints.Y}  and {topPoints.Z} {topPoints.W}");
                 bottomPoints -= weaponPosSubstractor;
-                //Logger.Warning($"Bottom point 1 : {bottomPoints.X}, {bottomPoints.Y} 2 {bottomPoints.Z}, {bottomPoints.W}");
-                //Logger.Warning($"Bottom points are :  {bottomPoints.X} {bottomPoints.Y}  and {bottomPoints.Z} {bottomPoints.W}");
                 var angles = new List<Angle>();
                 angles.Add(JanusAngle.Get(Angle.FromWorldVec(new Vector2(topPoints.X, topPoints.Y)).Reduced()));
                 angles.Add(JanusAngle.Get(Angle.FromWorldVec(new Vector2(topPoints.Z, topPoints.W)).Reduced()));
@@ -75,34 +63,53 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                 Angle biggestStart = JanusAngle.Get(Angle.Zero);
                 Angle biggestEnd = JanusAngle.Get(Angle.Zero);
                 Angle biggestRadius = JanusAngle.Get(Angle.Zero);
-                JanusSlice biggestSlice = null;
-                /*
-                foreach (var angle in angles)
-                {
-                    Logger.Warning($"Angle : {angle.Degrees}");
-                }
-                */
+                JanusSlice? biggestSlice = null;
                 foreach (var angle in angles)
                 {
                     foreach (var others in angles)
                     {
-                        //if (JanusAngle.ClosestTurn(others, angle) < 0)
-                        //    continue;
-                        Logger.Warning($"Comparing {(others - angle).Degrees}");
-                        if (JanusAngle.ClosestDifference(angle, others)> biggestRadius)
+                        if (JanusAngle.ClosestDifference(angle, others) > biggestRadius)
                         {
                             biggestRadius = JanusAngle.ClosestDifference(angle, others);
-                            Logger.Warning($"$Switched to {biggestRadius.Degrees} !");
-                            biggestSlice = (JanusAngle.CounterClockSlice(others, angle));
-                            biggestStart = others;
-                            biggestEnd = angle;
+                            biggestSlice = JanusAngle.CounterClockSlice(angle, others);
                         }
                     }
                 }
+
                 //Logger.Warning($"Obtained slice  , starting at {biggestStart.Degrees} and a radius of {biggestRadius.Degrees}");
-                anglePairs.Add(new AnglePair(){first = biggestStart, second = biggestEnd});
+                if(biggestSlice != null)
+                    slices.Add(biggestSlice);
             }
 
+        }
+
+        {
+            var i = 0;
+            var j = 0;
+            while (i < anglePairs.Count - 1)
+            {
+                j = i + 1;
+                while (j < anglePairs.Count)
+                {
+                    if (slices[i].overlap(slices[j]) != 0)
+                    {
+                        slices[i].Merge(slices[j]);
+                        slices.RemoveAt(j);
+                        j--;
+                        continue;
+                    }
+
+                    j++;
+
+                }
+
+                i++;
+            }
+        }
+
+        foreach (var slice in slices)
+        {
+            anglePairs.Add(slice.ConvertToAnglePair());
         }
 
         return anglePairs;
