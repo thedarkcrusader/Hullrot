@@ -83,28 +83,24 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
 
         }
 
+
+        var i = 0;
+        var j = 0;
+        while (i < slices.Count - 1)
         {
-            var i = 0;
-            var j = 0;
-            while (i < anglePairs.Count - 1)
+            j = i + 1;
+            while (j < slices.Count)
             {
-                j = i + 1;
-                while (j < anglePairs.Count)
+                if (slices[i].Overlaps(slices[j]))
                 {
-                    if (slices[i].overlap(slices[j]) != 0)
-                    {
-                        slices[i].Merge(slices[j]);
-                        slices.RemoveAt(j);
-                        j--;
-                        continue;
-                    }
-
-                    j++;
-
+                    Logger.Warning($"Merging angles {slices[i].Angle.Degrees} to {slices[j].Angle.Degrees}. R1: {slices[i].Radius.Degrees}. R2: {slices[j].Radius.Degrees}");
+                    slices[i].Merge(slices[j]);
+                    slices.RemoveAt(j);
+                    continue;
                 }
-
-                i++;
+                j++;
             }
+            i++;
         }
 
         foreach (var slice in slices)

@@ -35,7 +35,7 @@ public static class JanusAngle
         Angle acute = (target - starting).Reduced();
         if (Math.Abs(acute.Theta) > Math.PI)
         {
-            Logger.Warning($"$Converting {acute.Degrees} degrees to ${(2 * Math.PI - Math.Abs(acute.Theta)) * 180 / Math.PI} !");
+           // Logger.Warning($"$Converting {acute.Degrees} degrees to ${(2 * Math.PI - Math.Abs(acute.Theta)) * 180 / Math.PI} !");
             acute = new Angle(2 * Math.PI - Math.Abs(acute.Theta));
         }
     return acute;
@@ -64,51 +64,52 @@ public static class JanusAngle
     }
 }
 
-
-public class JanusSlice
+// Always counter-clock wise!
+public sealed class JanusSlice
 {
     public required Angle Angle;
     public required Angle Radius;
-    public int overlap(JanusSlice other)
+    public bool Overlaps(JanusSlice other)
     {
         var startingAngleDiff = JanusAngle.ClosestTurn(Angle, other.Angle);
         if (startingAngleDiff == -1)
-        {
-            if ((other.Angle + other.Radius).Reduced() > Angle)
-                return -1;
-            if ((Angle + Radius) > other.Angle)
-                return 1;
-        }
-        else
-        {
-            if((Angle + Radius).Reduced() > other.Angle)
-                return 1;
-            if (other.Angle + other.Radius > Angle)
-                return -1;
-        }
-        return 0;
+            return other.Overlaps(this);
+
+        if((Angle + Radius) > other.Angle)
+            return true;
+
+        Logger.Warning($"Did not overlap angles {Angle.Degrees},{(Angle+Radius).Degrees} and {other.Angle.Degrees}, {(other.Angle + other.Radius).Degrees}");
+        return false;
+    }
+
+    public int OverlapDirection(JanusSlice other)
+    {
+        var startingAngleDiff = JanusAngle.ClosestTurn(Angle, other.Angle);
+        if (startingAngleDiff == -1)
+            return -1;
+        return 1;
     }
     // returns how many angles one of the radius is inside the other.
-    public double overlapDifference(JanusSlice other)
+    public double OverlapDifference(JanusSlice other)
     {
-        var direction = overlap(other);
-        switch (direction)
+        switch (OverlapDirection(other))
         {
             case 1:
-                return (Angle + Radius - other.Angle).Theta;
+                return Math.Min(Angle - other.Angle + Radius, other.Radius);
             case -1:
-                return (other.Angle + other.Radius - Angle).Theta;
+                return other.OverlapDifference(this);
         }
 
         return 0;
+
     }
     // this will merge the 2 slices, if they aren't overlapping it'll just add the radius of the other to the first!
     public JanusSlice Merge(JanusSlice other)
     {
-        if(overlap(other) == 0)
-            Radius = Radius + other.Radius;
+        if(!Overlaps(other))
+            Radius = (Radius + other.Radius);
         else
-            Radius = Radius + other.Radius - overlapDifference(other);
+            Radius = Radius + other.Radius - OverlapDifference(other);
         return this;
     }
 
