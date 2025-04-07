@@ -94,10 +94,13 @@ namespace Content.Client.__CEVJanus
                     Vector2 from = _transformSystem.GetWorldPosition(xform);
                     foreach (var anglePair in safeComponent.safeAngles)
                     {
-                        Vector2 to = from + (anglePair.first).ToWorldVec() * 3;
-                        handle.DrawLine(from, to, Color.OrangeRed);
-                        to = from + (anglePair.second).ToWorldVec() * 3;
-                        handle.DrawLine(from, to, Color.Purple);
+                        Vector2 first = from + (anglePair.first).ToWorldVec() * 3;
+                        handle.DrawLine(from, first, Color.Green);
+                        Vector2 second = from + (anglePair.second).ToWorldVec() * 3;
+                        handle.DrawLine(from, second, Color.Red);
+                        handle.DrawLine(second, (second+first)/2, Color.Black);
+                        handle.DrawLine((second + first)/2, first, Color.White);
+
                     }
                 }
             }

@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Content.Server._DESVJanus;
 
 
 namespace Content.Shared._DSEVJanus;
@@ -28,10 +29,28 @@ public static class JanusAngle
         return -1;
     }
 
-    // returns the acute angle between 2 angles. Will be positive if counter clockwise , negative other wise
-    public static Angle ClosestDifference(Angle target, Angle starting)
+    // returns the acute angle between 2 angles. Will be positive if counter clockwise , negative other wise. Fails in some cases
+    public static Angle ClosestDifference(Angle starting, Angle target)
     {
-        return (target - starting).Reduced();
+        Angle acute = (target - starting).Reduced();
+        if (Math.Abs(acute.Theta) > Math.PI)
+            acute = double.Sign(acute.Theta) * 2 * Math.PI - acute.Theta;
+        return acute;
+    }
+    // this ensures the  2 angles are properly put in counter-clockwise
+    public static JanusSlice CounterClockSlice(Angle first, Angle second)
+    {
+        JanusSlice slice = new JanusSlice()
+        {
+            Angle = first,
+            Radius = second - first,
+        };
+        if (slice.Radius < 0)
+        {
+            slice.Angle = second;
+            slice.Radius *= -1;
+        }
+        return slice;
     }
 
     public static Angle PositiveDifference(Angle target, Angle starting)
@@ -87,5 +106,14 @@ public class JanusSlice
         else
             Radius = Radius + other.Radius - overlapDifference(other);
         return this;
+    }
+
+    public AnglePair ConvertToAnglePair()
+    {
+        return new AnglePair()
+        {
+            first = Angle,
+            second = (Angle + Radius).Reduced(),
+        };
     }
 }

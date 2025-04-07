@@ -75,6 +75,7 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                 Angle biggestStart = JanusAngle.Get(Angle.Zero);
                 Angle biggestEnd = JanusAngle.Get(Angle.Zero);
                 Angle biggestRadius = JanusAngle.Get(Angle.Zero);
+                JanusSlice biggestSlice = null;
                 /*
                 foreach (var angle in angles)
                 {
@@ -88,9 +89,11 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                         //if (JanusAngle.ClosestTurn(others, angle) < 0)
                         //    continue;
                         Logger.Warning($"Comparing {(others - angle).Degrees}");
-                        if (others - angle> biggestRadius)
+                        if (JanusAngle.ClosestDifference(angle, others)> biggestRadius)
                         {
-                            biggestRadius = others - angle;
+                            biggestRadius = JanusAngle.ClosestDifference(angle, others);
+                            Logger.Warning($"$Switched to {biggestRadius.Degrees} !");
+                            biggestSlice = (JanusAngle.CounterClockSlice(others, angle));
                             biggestStart = others;
                             biggestEnd = angle;
                         }
