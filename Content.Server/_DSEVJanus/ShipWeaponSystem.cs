@@ -83,7 +83,6 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
 
         }
 
-
         var i = 0;
         var j = 0;
         while (i < slices.Count - 1)
@@ -96,7 +95,8 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
                     Logger.Warning($"Merging angles {slices[i].Angle.Degrees} to {slices[j].Angle.Degrees}. R1: {slices[i].Radius.Degrees}. R2: {slices[j].Radius.Degrees}");
                     slices[i].Merge(slices[j]);
                     slices.RemoveAt(j);
-                    continue;
+                    i = Math.Max(0, i - 1);
+                    break;
                 }
                 j++;
             }

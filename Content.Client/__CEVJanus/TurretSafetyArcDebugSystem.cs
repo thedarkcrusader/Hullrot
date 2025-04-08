@@ -99,11 +99,9 @@ namespace Content.Client.__CEVJanus
                         Vector2 second = from + (anglePair.second).ToWorldVec() * 3;
                         handle.DrawLine(from, second, Color.Red);
                         var angle = anglePair.first;
-                        while (Math.Abs(angle - anglePair.second) > Angle.FromDegrees(5))
+                        while (Math.Abs(anglePair.second - angle) > Angle.FromDegrees(5))
                         {
-                            angle = angle + Angle.FromDegrees(5);
-                            if (angle > anglePair.second)
-                                continue;
+                            angle = (angle + Angle.FromDegrees(4)).Reduced();
                             handle.DrawLine(from, from + angle.ToWorldVec()* 3, Color.Yellow);
                         }
                     }

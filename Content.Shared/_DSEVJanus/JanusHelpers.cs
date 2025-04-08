@@ -106,19 +106,24 @@ public sealed class JanusSlice
     // this will merge the 2 slices, if they aren't overlapping it'll just add the radius of the other to the first!
     public JanusSlice Merge(JanusSlice other)
     {
-        if(!Overlaps(other))
-            Radius = (Radius + other.Radius);
-        else
-            Radius = Radius + other.Radius - OverlapDifference(other);
+        var old = Radius;
+        Radius = Radius + other.Radius - OverlapDifference(other);
+        if(Radius > 2*Math.PI)
+            Logger.Warning($"Got full round on this one!!");
+        Logger.Warning($"Merged {Angle.Degrees} and {old.Degrees} with {other.Angle.Degrees }{other.Radius.Degrees} to get {Radius.Degrees}");
+
+
         return this;
     }
 
     public AnglePair ConvertToAnglePair()
     {
+        if((Angle + Radius )> 2 * Math.PI)
+            Logger.Warning($"Converting pair with {Angle.Degrees} and {(Angle + Radius).Degrees} to radius : {(Angle + Radius).Reduced().Degrees}");
         return new AnglePair()
         {
             first = Angle,
-            second = (Angle + Radius).Reduced(),
+            second = Angle + Radius,
         };
     }
 }
