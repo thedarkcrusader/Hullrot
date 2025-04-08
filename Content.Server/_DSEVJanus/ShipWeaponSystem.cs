@@ -92,7 +92,7 @@ public sealed class ShipWeaponSystem : SharedShipWeaponSystem
             {
                 if (slices[i].Overlaps(slices[j]))
                 {
-                    Logger.Warning($"Merging angles {slices[i].Angle.Degrees} to {slices[j].Angle.Degrees}. R1: {slices[i].Radius.Degrees}. R2: {slices[j].Radius.Degrees}");
+                    //Logger.Warning($"Merging angles {slices[i].Angle.Degrees} to {slices[j].Angle.Degrees}. R1: {slices[i].Radius.Degrees}. R2: {slices[j].Radius.Degrees}");
                     slices[i].Merge(slices[j]);
                     slices.RemoveAt(j);
                     i = Math.Max(0, i - 1);

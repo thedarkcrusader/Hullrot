@@ -75,10 +75,8 @@ public sealed class JanusSlice
         if (startingAngleDiff == -1)
             return other.Overlaps(this);
 
-        if((Angle + Radius) > other.Angle)
+        if((Angle + Radius).Reduced() > other.Angle)
             return true;
-
-        Logger.Warning($"Did not overlap angles {Angle.Degrees},{(Angle+Radius).Degrees} and {other.Angle.Degrees}, {(other.Angle + other.Radius).Degrees}");
         return false;
     }
 
@@ -95,6 +93,7 @@ public sealed class JanusSlice
         switch (OverlapDirection(other))
         {
             case 1:
+                Logger.Warning($"Overlap difference returning {Math.Min(Angle - other.Angle + Radius, other.Radius)}");
                 return Math.Min(Angle - other.Angle + Radius, other.Radius);
             case -1:
                 return other.OverlapDifference(this);
@@ -106,24 +105,16 @@ public sealed class JanusSlice
     // this will merge the 2 slices, if they aren't overlapping it'll just add the radius of the other to the first!
     public JanusSlice Merge(JanusSlice other)
     {
-        var old = Radius;
         Radius = Radius + other.Radius - OverlapDifference(other);
-        if(Radius > 2*Math.PI)
-            Logger.Warning($"Got full round on this one!!");
-        Logger.Warning($"Merged {Angle.Degrees} and {old.Degrees} with {other.Angle.Degrees }{other.Radius.Degrees} to get {Radius.Degrees}");
-
-
         return this;
     }
 
     public AnglePair ConvertToAnglePair()
     {
-        if((Angle + Radius )> 2 * Math.PI)
-            Logger.Warning($"Converting pair with {Angle.Degrees} and {(Angle + Radius).Degrees} to radius : {(Angle + Radius).Reduced().Degrees}");
         return new AnglePair()
         {
             first = Angle,
-            second = Angle + Radius,
+            second = (Angle + Radius).Reduced(),
         };
     }
 }
