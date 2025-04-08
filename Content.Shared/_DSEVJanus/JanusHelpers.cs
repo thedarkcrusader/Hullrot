@@ -69,8 +69,28 @@ public sealed class JanusSlice
 {
     public required Angle Angle;
     public required Angle Radius;
+
+    public bool Over360()
+    {
+        return Angle > (Angle + Radius).Reduced();
+    }
+    // angle diff to 360 degree point
+    public Angle ADT360()
+    {
+        return new Angle(2*Math.PI - Angle);
+    }
+
     public bool Overlaps(JanusSlice other)
     {
+        // special case , both overlap 0-360
+        if (Over360())
+        {
+            if(other.Over360())
+                return true;
+            if (other.Angle + other.Radius > Angle)
+                return true;
+        }
+
         var startingAngleDiff = JanusAngle.ClosestTurn(Angle, other.Angle);
         if (startingAngleDiff == -1)
             return other.Overlaps(this);
@@ -80,20 +100,21 @@ public sealed class JanusSlice
         return false;
     }
 
-    public int OverlapDirection(JanusSlice other)
-    {
-        var startingAngleDiff = JanusAngle.ClosestTurn(Angle, other.Angle);
-        if (startingAngleDiff == -1)
-            return -1;
-        return 1;
-    }
     // returns how many angles one of the radius is inside the other.
     public double OverlapDifference(JanusSlice other)
     {
+        if (Over360())
+        {
+            
+        }
         switch (OverlapDirection(other))
         {
             case 1:
-                Logger.Warning($"Overlap difference returning {Math.Min(Angle - other.Angle + Radius, other.Radius)}");
+                if (Over360())
+                {
+                    if(other.Over360())
+                        return
+                }
                 return Math.Min(Angle - other.Angle + Radius, other.Radius);
             case -1:
                 return other.OverlapDifference(this);
@@ -105,6 +126,9 @@ public sealed class JanusSlice
     // this will merge the 2 slices, if they aren't overlapping it'll just add the radius of the other to the first!
     public JanusSlice Merge(JanusSlice other)
     {
+
+        if (other.Angle < Angle)
+            return other.Merge(this);
         Radius = Radius + other.Radius - OverlapDifference(other);
         return this;
     }
