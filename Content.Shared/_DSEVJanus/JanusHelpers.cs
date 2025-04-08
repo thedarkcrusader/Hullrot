@@ -87,8 +87,15 @@ public sealed class JanusSlice
         {
             if(other.Over360())
                 return true;
-            if (other.Angle + other.Radius > Angle)
-                return true;
+            if (Angle > other.Angle)
+            {
+                if (other.Angle + other.Radius > Angle)
+                    return true;
+                return false;
+            }
+
+            return other.Overlaps(this);
+
         }
 
         var startingAngleDiff = JanusAngle.ClosestTurn(Angle, other.Angle);
@@ -103,25 +110,15 @@ public sealed class JanusSlice
     // returns how many angles one of the radius is inside the other.
     public double OverlapDifference(JanusSlice other)
     {
-        if (Over360())
+        if (Over360() && other.Over360())
         {
-            
-        }
-        switch (OverlapDirection(other))
-        {
-            case 1:
-                if (Over360())
-                {
-                    if(other.Over360())
-                        return
-                }
-                return Math.Min(Angle - other.Angle + Radius, other.Radius);
-            case -1:
+            if (other.Angle < Angle)
                 return other.OverlapDifference(this);
+            return other.ADT360() + Math.Min(Radius - ADT360(), other.Radius - other.ADT360());
         }
-
-        return 0;
-
+        if(Angle > other.Angle)
+            return Math.Min(Angle - other.Angle + Radius, other.Radius);
+        return other.OverlapDifference(this);
     }
     // this will merge the 2 slices, if they aren't overlapping it'll just add the radius of the other to the first!
     public JanusSlice Merge(JanusSlice other)
@@ -129,7 +126,9 @@ public sealed class JanusSlice
 
         if (other.Angle < Angle)
             return other.Merge(this);
+        Logger.Warning($"{Angle.Degrees} , {Radius.Degrees}  ||| {other.Angle.Degrees} , {other.Radius.Degrees}");
         Radius = Radius + other.Radius - OverlapDifference(other);
+        Logger.Warning($"Merging Angle {Angle.Degrees} and {other.Angle.Degrees} , got a radius of {Radius.Degrees}");
         return this;
     }
 
