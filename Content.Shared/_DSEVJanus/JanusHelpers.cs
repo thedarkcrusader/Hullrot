@@ -117,7 +117,7 @@ public sealed class JanusSlice
             return other.ADT360() + Math.Min(Radius - ADT360(), other.Radius - other.ADT360());
         }
         if(Angle > other.Angle)
-            return Math.Min(Angle - other.Angle + Radius, other.Radius);
+            return Math.Clamp(other.Angle - Angle + Radius, 0,other.Radius);
         return other.OverlapDifference(this);
     }
     // this will merge the 2 slices, if they aren't overlapping it'll just add the radius of the other to the first!
