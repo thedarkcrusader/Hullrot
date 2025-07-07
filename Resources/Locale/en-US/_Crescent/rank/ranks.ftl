@@ -11,18 +11,21 @@ crescent-rank-knight = Ser
 crescent-rank-manatarms = Levy
 crescent-rank-smarts = Dr.
 crescent-rank-ministry = Minister
+crescent-rank-courtier = Edler
 crescent-rank-archmaester = Archmaester
 crescent-rank-advocatus = Advocati
 crescent-rank-templar = Knight Templar
+crescent-rank-cadet = Cadet
 
 #ncwl
 crescent-rank-admin = Major
-crescent-rank-kommissar = Kmmsr.
-crescent-rank-artificer = Artfcr.
+crescent-rank-kommissar = Kommissar
+crescent-rank-artificer = Artificer
 crescent-rank-doktor = Dr.
-crescent-rank-partisan = Sldt.
+crescent-rank-specialist = Specialist
+crescent-rank-partisan = Soldat
 crescent-rank-soldat = Kadet
-crescent-rank-kapitan = Kptn.
+crescent-rank-kapitan = Kapitan
 
 #syn
 
@@ -65,6 +68,9 @@ crescent-rank-leutnant = Lt.
 crescent-rank-soldatATH = PvT.
 crescent-rank-sanitat = PvT.
 crescent-rank-kanoneer = Cpl.
+crescent-rank-steward = Steward
+crescent-rank-logistat = Marshallie
+
 
 #misc
 

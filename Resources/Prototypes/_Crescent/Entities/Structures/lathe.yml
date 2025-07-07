@@ -143,6 +143,9 @@
       - CartridgeBicaridineInterdyne
       - CartridgeSalineInterdyne
       - CartridgeDermalineInterdyne
+      - CartridgePuncturaseInterdyne
+      - CartridgeAtropineInterdyne
+      - SyringeCase
       - InterdyneOptics
   - type: Anchorable
     flags:
@@ -179,6 +182,8 @@
       tags:
       - Sheet
       - CraftMaterials
+      - Ingot
+      - RawMaterial
   - type: Sprite
     sprite: _Crescent/Structures/nanoforge.rsi
     layers:
@@ -337,6 +342,7 @@
       - Brutepack
       - Ointment
       - Gauze
+      - SyringeCase
       - DisposableSyringe
       - HandheldHealthAnalyzer
       - BodyBag
@@ -374,7 +380,6 @@
       - ClothingEyesNightVisionGoggles
       - Terminus
       - ClothingOuterHardsuitShanlinUnpainted
-      - HandHeldMassScanner
       - BorgModuleGPS
       - RadarConsoleCircuitboard
       - EMPGrenadeElectronics
@@ -388,6 +393,7 @@
       - ClothingUniformJumpsuitSyndicateLabCyberdawn
       - ClothingUniformJumpsuitSyndicateSoldierCyberdawn
       - ClothingOuterArmorCyberdawnPatriarch
+      - ClothingOuterArmorKendoBoguCyberdawn
       - ClothingOuterHardsuitCybersun
       - ClothingHeadHatPatriarch
       - WeaponSubMachineGunAtreidesCyberdawn
@@ -406,8 +412,60 @@
       - ClothingOuterHardsuitSyndieMedicCyberdawn
       - ClothingOuterHardsuitCybersunStealthCyberdawn
       - MagazinePistolSpecialMindbreakerCyberdawn
+      - WeaponPistolPsiBreakerCyberdawn
       - ClothingEyesThermalVisionGogglesCyberdawn
-      - WeaponPistolPsibreakerCyberdawn
+      - ClothingMaskImperialCombatGasmask
+      - ClothingOuterCoatImperialParade
+      - ClothingUniformJumpsuitImperialDoctor
+      - ClothingUniformJumpsuitImperialFreeholder
+      - ClothingHandsGlovesImperialWorkerGloves
+      - ClothingShoesBootsImperialLongboots
+      - ClothingHandsGlovesImperialLonggloves
+      - ClothingHeadHelmetImperialWorkerHelmet
+      - ClothingHeadHatImperialPeakedCap
+      - ClothingOuterCoatImperialSoftsuit
+      - ClothingHeadHelmetImperialEVA
+      - ClothingHeadHatImperialHat
+      - ClothingUniformJumpsuitImperialNobleMale
+      - ClothingUniformJumpsuitImperialNobleFemale
+      - ClothingUniformJumpsuitImperialSoldierFormal
+      - ClothingMaskImperialGovernorMask
+      - ClothingOuterCoatImperialGovernor
+      - ClothingNeckCloakImperialGovernor
+      - ClothingOuterHardsuitImperialWorker
+      - ClothingHeadHelmetImperialTrooperHelmet
+      - ClothingOuterArmorImperialTrooperArmor
+      - ClothingOuterHardsuitImperialSoldier
+      - ClothingHeadHelmetImperialKnightCommanderHelmet
+      - ClothingOuterArmorImperialArmorPrestige
+      - ClothingOuterHardsuitImperialCommand
+      - CarrionFlatpack
+      - WeaponMechIndustrialKineticAcceleratorImperial
+      - MechEquipmentGrabberImperial
+      - WeaponMechMeleeDrillImperial
+      - WeaponRifleMiller
+      - WeaponRevolverArgenti
+      - WeaponPistolComplianceImperial
+      - CovetorLPC
+      - IbisLPC
+      - SunesisLPC
+      - ClothingBeltSheathRapier
+      - ClothingBeltSheathDSMSabre
+      - DSMRapier
+      - DSMSabre
+      - LaelapsLPC
+      - PaladinFlatpack
+      - WeaponRifleDSMLegionnaire
+      - WeaponSubMachineGunC20rImperial
+      - WeaponPistolNeoVolker
+      - ClothingBeltSheathKhopesh
+      - SRMKhopesh
+      - WeaponSubMachineGunBeetle
+      - WeaponRifleHunter
+      - ClothingOuterHardsuitHunterElite
+      - WeaponLauncherM320
+      - TriumphantLPC
+      - PadparadschaLPC
   - type: Machine
     board: MicroforgeCircuitboard
 

@@ -567,3 +567,26 @@
     sprite: _Crescent/Structures/fueltank.rsi
     layers:
       - state: fueltank
+
+- type: gamePreset
+  id: Adventure
+  alias:
+    - adventure
+    - hullrot
+  name: adventure-title
+  showInVote: true
+  description: adventure-description
+  rules:
+    - Adventure
+    - LavalandStormScheduler # Lavaland Change
+
+- type: gamePreset
+  id: Unionfall
+  alias:
+    - unionfall
+  name: unionfall-title
+  showInVote: true
+  description: unionfall-description
+  rules:
+    - Unionfall
+    - LavalandStormScheduler # Lavaland Change

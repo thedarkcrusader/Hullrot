@@ -27,7 +27,8 @@ job-name-foreman = SAW Foreman
 job-name-freeholder = Freeholder
 job-name-levyman = Man-at-Arms
 job-name-knight = Knight Banneret
-job-name-courtier = Minister of Labor
+job-name-courtier = Courtier
+job-name-ministerlabor = Minister of Labor
 job-name-logisticsofficer = Minister of Wealth
 job-name-adjutant = Imperial Adjutant
 job-name-archmaester = Scribe Archmaester
@@ -84,6 +85,14 @@ job-name-leutnant = Leutnant
 job-name-soldat = Jaeger
 job-name-sanitatATH = Sanitat
 job-name-kanoneer = Kanoneer
+job-name-steward = First Steward
+job-name-oberartz = Oberartz
+job-name-logistat = Logistitat Marshallie
+job-name-handels = Handels
+job-name-forscher = Forscher
+job-name-chirurgeon = Chirurgeon
+job-name-vorarbeiter = Vorarbeiter
+job-name-arbeiter = Arbeiter
 
 #misc
 
@@ -91,3 +100,25 @@ job-name-antiquarian = Izdari Antiquarian
 job-name-spacer = Spacer
 job-name-gliess-sheriff = Gliessian Sheriff
 job-name-gliess-dockmaster = Gliessian Dockmaster
+
+#conscript-ncwl#
+
+job-name-conscript-ncwl-leader = Kommissar
+job-name-conscript-ncwl-amr = Specialist (Sniper)
+job-name-conscript-ncwl-lmg = Specialist (LMG)
+job-name-conscript-ncwl-doctor = Doktor
+job-name-conscript-ncwl-smg = Soldat (SMG)
+job-name-conscript-ncwl-shotgun = Soldat (Shotgun)
+job-name-conscript-ncwl-rifleman = Soldat (Rifle)
+job-name-conscript-ncwl-cadet = Kadet
+
+#conscript-dsm#
+
+job-name-conscript-dsm-leader = Knight Templar
+job-name-conscript-dsm-amr = Knight (Sniper)
+job-name-conscript-dsm-lmg = Knight (LMG)
+job-name-conscript-dsm-doctor = Combat Medic
+job-name-conscript-dsm-smg = Man-At-Arms (SMG)
+job-name-conscript-dsm-shotgun = Man-At-Arms (Shotgun)
+job-name-conscript-dsm-rifleman = Man-At-Arms (Rifle)
+job-name-conscript-dsm-cadet = Cadet

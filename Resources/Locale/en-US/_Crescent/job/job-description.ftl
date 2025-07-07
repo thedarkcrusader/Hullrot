@@ -27,7 +27,8 @@ job-description-foreman = Coordinate the SAWs. Lead pirate boardings. Scrap vess
 job-description-freeholder = Obey the Imperial hierarchy. Earn Credits for the Governor.
 job-description-levyman = Obey your liege. Uphold the will of the Kaiser.
 job-description-knight = Organize the Imperial Navy. Obey your liege.
-job-description-courtier = Oversee and command reconstruction and trade efforts on behalf of your liege.
+job-description-courtier = Obey your liege. Intrigue for power and rank within his prestigious court.
+job-description-labor = Oversee and command reconstruction and trade efforts on behalf of your liege.
 job-description-adjutant = Obey your liege lord, the Kaiser, and your liege lord, the Governor. Attempt to coordinate the Empire.
 job-description-governor = Maintain the delicate balance of the Count's court. Protect your fief.
 job-description-logistics = Outfit your liege's army with vessels and munitions.
@@ -86,9 +87,39 @@ job-description-leutnant = Lead the 43rd Battlegroup's battle fleets.
 job-description-kanoneer = Tend to repairs and maintenance of the armaments and shuttles of the 43rd Battlegroup.
 job-description-soldat = Be the boots on the ground of the 43rd Battlegroup. Patrol the sector. Vanquish psionicists.
 job-description-sanitat = Tend to the wounded and the sickly of the 43rd Battlegroup. Diagnose the many mental illnesses of your peers.
+job-description-steward = Ensure the smooth running of the 43rd Battlegroup. Be the glue that holds it together.
+job-description-oberartz = Sector Crescent is trapped with your magnificient mind and your overwhelming Faustian Spirit.
+job-description-logistat = Organise the vast cargoes that maintain the 43rd Battlegroup. Forget where the Battlegroup's container of speakers went.
+job-description-handels = Peddle the cargoes that maintain the 43rd Battlegroup and your credit balance.
+job-description-forscher = Trapped within such a bountiful space of curiosities. Such potential for research is within your grasp.
+job-description-chirurgeon = So many new dissections to catalog. But do you delay that amputation another hour.
+job-description-vorarbeiter = Guide the Arbeiters in new industrial conquests. Mine the stars and forge the 43rd Battlegroup's might.
+job-description-arbeiter = The industrial life blood of the Authoritat. Follow the Vorarbeiter's direction. Fear the psionicist.
+
 
 #misc
 
 job-description-spacer = Be an independent citizen of Taypan.
 job-description-gliess-sheriff = Keep the law in Gliess Santo.
 job-description-gliess-dockmaster = Make sure nobody blows up your station.
+
+#conscript-ncwl
+job-description-conscript-ncwl-leader = Lead the remnants of the NCWL. Ensure the League takes control of Vladzena.
+job-description-conscript-ncwl-amr = Deal with priority targets. Pick your shots carefully. Don't miss. (Anti-Materiel Rifle)
+job-description-conscript-ncwl-lmg = Provide fire support for your comrades. Control the battlefield. (Light Machine Gun)
+job-description-conscript-ncwl-doctor = Keep your comrades alive. Retrieve corpses to clone. (Magnum)
+job-description-conscript-ncwl-shotgun = Punch through enemy lines. Be the first to fall. (Double-Barrel Shotgun)
+job-description-conscript-ncwl-smg = Punish overconfidence. Make them keep their head down. (Submachine Gun)
+job-description-conscript-ncwl-rifleman = Be the rank and file. Be the corpses the League will stand on. (Bolt-action Rifle)
+job-description-conscript-ncwl-cadet = Listen to your superiors. Keep your head down and learn. (Bolt-action Rifle)
+
+#conscript-dsm
+job-description-conscript-dsm-leader = Lead the punishment regimen. Reclaim the honor of your house. Stamp out the League.
+job-description-conscript-dsm-amr = Deal with priority targets. Pick your shots carefully. Don't miss. (Anti-Materiel Rifle)
+job-description-conscript-dsm-lmg = Provide fire support for your brothers. Control the battlefield. (Light Machine Gun)
+job-description-conscript-dsm-doctor = Keep your brothers alive. Retrieve corpses to clone. (Magnum)
+job-description-conscript-dsm-shotgun = Punch through enemy lines. Be the first to fall. (Revolver Shotgun)
+job-description-conscript-dsm-smg = Punish overconfidence. Make them keep their head down. (Submachine Gun)
+job-description-conscript-dsm-rifleman = Be the rank and file. Be the corpses the League will stand on. (Lever-action Rifle)
+job-description-conscript-dsm-cadet = Listen to your superiors. Keep your head down and learn. (Lever-action Rifle)
+

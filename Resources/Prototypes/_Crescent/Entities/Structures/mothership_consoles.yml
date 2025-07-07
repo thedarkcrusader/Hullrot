@@ -31,31 +31,8 @@
   components:
   - type: ShipyardListing
     shuttles:
-    - Ibis
-    - Imparator
-    - Anathema
-    - Jannissary
-    - Nemesis
-    - Triumphant
-    - Raider
-
-- type: entity
-  id: LaborMothershipComputer
-  parent: BaseMothershipComputer
-  name: imperial shipyard
-  components:
-  - type: ShipyardListing
-    shuttles:
-    - Imp
-    - ProspectorCrescent
-
-- type: entity
-  id: ScribesMothershipComputer
-  parent: BaseMothershipComputer
-  name: imperial shipyard
-  components:
-  - type: ShipyardListing
-    shuttles:
+    - Redemptor
+    - Impel
     - Gnosis
     - Sunesis
 
@@ -68,9 +45,23 @@
     shuttles:
     - Imparator
     - Jannissary
-    - Raider
     - Conquest
     - Valor
+    - Praxis
+    - Torturer
+
+- type: entity
+  id: UnionfallNemesisMothershipComputer
+  parent: BaseMothershipComputer
+  name: nemesis internal shipyard
+  components:
+  - type: ShipyardListing
+    shuttles:
+    - Imparator
+    - Jannissary
+    - Conquest
+    - Valor
+
 
 - type: entity
   id: InterdyneMothershipComputer
@@ -95,18 +86,9 @@
     - Amadeus
     - Hyena
     - Rattler
+    - Scabrak
+    - Geode
     - Rockchipper
-
-- type: entity
-  id: RamziMothershipComputer
-  parent: BaseMothershipComputer
-  name: ramzi internal shipyard
-  components:
-  - type: ShipyardListing
-    shuttles:
-    - Velator
-    - Wisp
-    - Taipan
 
 - type: entity
   id: TatsumotoMothershipComputer
@@ -132,6 +114,17 @@
     shuttles:
     - Khopesh
     - Broadsword
+
+- type: entity
+  id: UnionfallClementineMothershipComputer
+  parent: BaseMothershipComputer
+  name: clementine internal shipyard
+  components:
+  - type: ShipyardListing
+    shuttles:
+    - Khopesh
+    - Broadsword
+    - Vanguard
 
 - type: entity
   id: JackalCarrierMothershipComputer
