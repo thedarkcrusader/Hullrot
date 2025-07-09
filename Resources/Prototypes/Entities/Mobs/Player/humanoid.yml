@@ -862,8 +862,6 @@
       raffle:
         settings: default
     - type: GhostTakeoverAvailable
-    - type: Loadout
-      prototypes: [ ResearchDirectorGear ]
     - type: RandomMetadata
       nameSegments:
       - names_first

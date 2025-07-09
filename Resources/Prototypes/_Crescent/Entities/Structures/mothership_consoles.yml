@@ -128,9 +128,6 @@
   id: AnathemaMothershipComputer
   parent: BaseMothershipComputer
   name: anathema internal shipyard
-  components:
-  - type: ShipyardListing
-    shuttles:
 
 - type: entity
   id: AlseikMothershipComputer
