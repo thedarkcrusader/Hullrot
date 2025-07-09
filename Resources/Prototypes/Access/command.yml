@@ -21,7 +21,7 @@
   - HeadOfPersonnel
   - HeadOfSecurity
   - Quartermaster
-  - ResearchDirector
+
 
 - type: accessLevel
   id: EmergencyShuttleRepealAll

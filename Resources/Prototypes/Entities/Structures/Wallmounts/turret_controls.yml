@@ -136,7 +136,7 @@
     - Medical
     - Quartermaster
     - Research
-    - ResearchDirector
+
     - Salvage
     - Security
     - Service
@@ -199,11 +199,11 @@
   description: A wall-mounted interface that allows a local artifical intelligence to adjust the operational parameters of linked sentry turrets.
   components:
   - type: AccessReader
-    access: [["StationAi"], ["Captain"], ["ResearchDirector"]]
+    access: [["StationAi"], ["Captain"]]
   - type: TurretTargetSettings
     exemptAccessLevels:
     - Captain
-    - ResearchDirector
+
     - BasicSilicon
     - Borg
   - type: DeviceNetwork

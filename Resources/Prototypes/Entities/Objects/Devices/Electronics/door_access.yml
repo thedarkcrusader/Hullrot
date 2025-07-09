@@ -167,9 +167,6 @@
   parent: DoorElectronics
   id: DoorElectronicsResearchDirector
   suffix: ResearchDirector, Locked
-  components:
-  - type: AccessReader
-    access: [["ResearchDirector"]]
 
 - type: entity
   parent: DoorElectronics

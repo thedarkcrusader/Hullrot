@@ -10,7 +10,6 @@
     - Cherenzikov
     - Hind
     - Ivarod
-    - Meteor
 
 - type: entity
   id: JackalMothershipComputer
@@ -132,8 +131,6 @@
   components:
   - type: ShipyardListing
     shuttles:
-    - Conquest
-    - Valor
 
 - type: entity
   id: AlseikMothershipComputer

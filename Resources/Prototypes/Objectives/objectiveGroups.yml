@@ -17,7 +17,6 @@
     NukeDiskStealObjective: 1
     MagbootsStealObjective: 1
     CorgiMeatStealObjective: 1
-    MantisKnifeStealObjective: 1 # Nyanotrasen - ForensicMantis steal objective, see Resources/Prototypes/Nyanotrasen/Objectives/traitor.yml
     ClipboardStealObjective: 1
     CaptainGunStealObjective: 0.5
     NTRepGunStealObjective: 0.5

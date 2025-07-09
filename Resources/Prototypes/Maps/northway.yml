@@ -43,7 +43,6 @@
             MedicalIntern: [ 2, 2 ]
             Paramedic: [ 1, 1 ]
           #science
-            ResearchDirector: [ 1, 1 ]
             Chaplain: [ 1, 1 ]
             Scientist: [ 2, 2 ]
             ResearchAssistant: [ 2, 2 ]

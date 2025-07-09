@@ -190,8 +190,6 @@
         - id: OxygenTankFilled
         - id: ClothingOuterHardsuitRd
         - id: ClothingMaskBreath
-  - type: AccessReader
-    access: [ [ "ResearchDirector" ] ]
 
 #HOS's hardsuit
 - type: entity

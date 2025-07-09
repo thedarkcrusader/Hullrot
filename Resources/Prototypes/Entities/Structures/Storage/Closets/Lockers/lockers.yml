@@ -310,8 +310,6 @@
     stateBaseClosed: rd
     stateDoorOpen: rd_open
     stateDoorClosed: rd_door
-  - type: AccessReader
-    access: [ [ "ResearchDirector" ] ]
 
 - type: entity
   id: LockerScientist

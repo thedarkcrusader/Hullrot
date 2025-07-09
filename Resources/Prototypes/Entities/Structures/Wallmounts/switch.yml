@@ -283,14 +283,6 @@
     access: [["HeadOfSecurity"]]
 
 - type: entity
-  id: LockableButtonResearchDirector
-  suffix: ResearchDirector
-  parent: LockableButton
-  components:
-  - type: AccessReader
-    access: [["ResearchDirector"]]
-
-- type: entity
   id: LockableButtonCommand
   suffix: Command
   parent: LockableButton

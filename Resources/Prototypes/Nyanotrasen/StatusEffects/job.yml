@@ -25,10 +25,3 @@
   icon:
     sprite: /Textures/DeltaV/Interface/Misc/job_icons.rsi
     state: nyanoMartialArtist
-
-- type: jobIcon
-  parent: JobIcon
-  id: JobIconForensicMantis
-  icon:
-    sprite: /Textures/DeltaV/Interface/Misc/job_icons.rsi
-    state: nyanoMantis

@@ -1,6 +1,6 @@
 - type: reagent
   id: BoriaticFuel
-  name: reagent-name-Boriatic-fuel
+  name: "Boriatic Fuel"
   parent: BasePyrotechnic
   desc: reagent-desc-Boriatic-fuel
   physicalDesc: reagent-physical-desc-oily
