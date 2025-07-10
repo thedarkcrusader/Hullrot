@@ -2,30 +2,29 @@
 # Discord: @fleshangel
 
 - type: vessel
-  id: Hind
-  name: NCWL Hind
-  description: A light ore freighter converted into a missile frigate.
-  price: 60000
-  category: Medium
+  id: UnionfallLodka
+  name: NCWL Lodka
+  description: A light communard fighter.
+  price: 25000
+  category: Small
   group: None
-  path: /Maps/_Crescent/Shuttles/NCWL/hind.yml
+  path: /Maps/_Crescent/Unionfall/NCWL/unionfall_lodka.yml
 
 - type: gameMap
-  id: Hind
-  mapName: 'NCWL Hind'
-  mapPath: /Maps/_Crescent/Shuttles/NCWL/hind.yml
+  id: UnionfallLodka
+  mapName: 'NCWL Lodka'
+  mapPath: /Maps/_Crescent/Unionfall/NCWL/unionfall_lodka.yml
   minPlayers: 0
   stations:
-    Hind:
+    UnionfallLodka:
       stationProto: StandardCrescentVessel
       components:
         - type: StationNameSetup
-          mapNameTemplate: 'NCWL Hind {1}'
+          mapNameTemplate: 'NCWL Lodka {1}'
           nameGenerator:
             !type:NanotrasenNameGenerator
             prefixCreator: '14'
         - type: VesselDesignation
-          designation: vessel-designation-missile
         - type: StationJobs
           overflowJobs: []
           availableJobs:

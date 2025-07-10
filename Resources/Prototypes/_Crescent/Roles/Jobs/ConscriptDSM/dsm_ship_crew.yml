@@ -1,11 +1,11 @@
 - type: job
-  id: ConscriptLeaderNCWL
-  name: job-name-conscript-ncwl-leader
-  description: job-description-conscript-ncwl-leader
-  playTimeTracker: ConscriptJobLeaderNCWL
+  id: ConscriptShipCrewDSM
+  name: job-name-conscript-dsm-ship-crew
+  description: job-description-conscript-dsm-ship-crew
+  playTimeTracker: ConscriptJobShipCrewDSM
   requirements:
     - !type:FactionRequirement
-      factionID: "NCWL"
+      factionID: "DSM"
     - !type:CharacterTraitRequirement
       inverted: true
       traits:
@@ -16,17 +16,17 @@
         - Pacifist
         - WheelchairBound
   weight: 55
-  startingGear: ConscriptLeaderNCWLGear
+  startingGear: ConscriptShipCrewDSMGear
   alwaysUseSpawner: true
-  icon: "JobIconCommissar"
+  icon: "JobIconImperialAdjutant"
   requireAdminNotify: true
-  supervisors: job-supervisors-highcomm
+  supervisors: job-supervisors-imperial
   canBeAntag: false
   special:
   - !type:AddComponentSpecial
     components:
       - type: ChatRank
-        rank: crescent-rank-kommissar
+        rank: crescent-rank-dsm-crew
   access:
   - EmergencyShuttleRepealAll
   - Captain
@@ -65,29 +65,26 @@
   - Atmospherics
   - Command
   - Maintenance
-  - NCWLGeneral
+  - DSMGeneral
   - Service
-  - NCWLKommissar
-  - NCWLJail
-  - NCWLArmory
-  - NCWLCommand
+  - DSMJail
+  - DSMArmory
+  - DSMCommand
   - External
   - Captain # Frontier
+  - Empire
 
 - type: startingGear
-  id: ConscriptLeaderNCWLGear
+  id: ConscriptShipCrewDSMGear
   equipment:
-    jumpsuit: ClothingUniformJumpsuitNCWLKommissar
-    neck: ClothingNeckIFFOrange
-    id: KommissarPDA
-    ears: ClothingHeadsetNCWL
-    mask: ClothingMaskPilot
-    shoes: ClothingShoesBootsJack
-    outerClothing: ClothingOuterArmorNCWLCarapace
-    head: ClothingHeadHatNCWLKommissarHat
-    belt: ClothingBeltNCWLPouchesFilledKommissar
+    jumpsuit: ClothingUniformJumpsuitMilitaryColorBlue
+    neck: ClothingNeckIFFCyan
+    back: ClothingBackpackDSM
+    shoes: ClothingShoesBootsImperialLongboots
+    head: ClothingHeadHatBeretNavy
+    id: LevymanPDA
+    belt: ClothingBeltAssaultFilledRifleman
     pocket1: EmergencyOxygenTankFilled
-    back: ClothingBackpackNCWL
-    suitstorage: WeaponSniperNCWLNovomosin
+    ears: ClothingHeadsetEmpire
   inhand:
-    - WeaponPistolT91
+    - WeaponPistolComplianceImperial

@@ -43,14 +43,17 @@
   id: ConscriptRiflemanNCWLGear
   equipment:
     head: ClothingHeadHelmetNCWLBasic
+    neck: ClothingNeckIFFOrange
     mask: ClothingMaskPilot
     jumpsuit: ClothingUniformJumpsuitNCWL
     outerClothing: ClothingOuterArmorNCWLHeavyCarapace
     shoes: ClothingShoesBootsJack
     belt: ClothingBeltNCWLPouchesFilledRifleman
-    back: WeaponSniperNCWLNovomosin
+    back: ClothingBackpackNCWL
     pocket1: EmergencyOxygenTankFilled
     pocket2: GrenadeShrapnel
     ears: ClothingHeadsetNCWL
     id: SanitarPDA
-    suitstorage: WeaponPistolComrade
+    suitstorage: WeaponSniperNCWLNovomosin
+  inhand:
+    - WeaponPistolComrade

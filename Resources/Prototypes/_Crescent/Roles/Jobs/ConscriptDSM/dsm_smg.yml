@@ -41,15 +41,18 @@
   id: ConscriptSubmachinegunDSMGear
   equipment:
     head: ClothingHeadHelmetImperialTrooperHelmet
+    neck: ClothingNeckIFFCyan
     mask: ClothingMaskImperialCombatGasmask
     jumpsuit: ClothingUniformJumpsuitImperialCombat
     outerClothing: ClothingOuterArmorImperialTrooperArmor
     shoes: ClothingShoesBootsImperialJackboots
     belt: ClothingBeltAssaultFilledSubmachinegun
     gloves: ClothingHandsGlovesImperialLonggloves
-    back: WeaponSubMachineGunDSMArbiter
+    back: ClothingBackpackDSM
     pocket1: EmergencyOxygenTankFilled
     pocket2: GrenadeFlashBang
     ears: ClothingHeadsetEmpire
     id: LevymanPDA
-    suitstorage: WeaponPistolComplianceImperial
+    suitstorage: WeaponSubMachineGunDSMArbiter
+  inhand:
+    - WeaponPistolComplianceImperial

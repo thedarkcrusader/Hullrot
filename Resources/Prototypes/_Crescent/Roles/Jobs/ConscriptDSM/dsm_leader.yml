@@ -78,7 +78,8 @@
   id: ConscriptLeaderDSMGear
   equipment:
     jumpsuit: ClothingUniformJumpsuitImperialGovernor
-    back: WeaponSniperDSMLegax
+    neck: ClothingNeckIFFCyan
+    back: ClothingBackpackDSM
     shoes: ClothingShoesBootsImperialLongboots
     head: ClothingHeadHatImperialBeret
     outerClothing: ClothingOuterHardsuitImperialCommand
@@ -86,4 +87,6 @@
     belt: ClothingBeltAssaultFilledAdjutant
     pocket1: EmergencyOxygenTankFilled
     ears: ClothingHeadsetEmpire
-    suitstorage: WeaponPistolNeoVolker
+    suitstorage: WeaponSniperDSMLegax
+  inhand:
+    - WeaponPistolNeoVolker
