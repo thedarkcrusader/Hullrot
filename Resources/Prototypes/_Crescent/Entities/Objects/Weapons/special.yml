@@ -171,7 +171,7 @@
     rotationSpeed: 40
     acceleration: 25
     topSpeed: 125
-    FOV: 80
+
     defaultSeekingRange: 400
     guidanceAlgorithm: PredictiveGuidance
 
@@ -253,7 +253,6 @@
   - type: DisarmMalus
     malus: 0
   - type: Reflect
-    enabled: false
   - type: IgnitionSource
     temperature: 700
   - type: StaticPrice
