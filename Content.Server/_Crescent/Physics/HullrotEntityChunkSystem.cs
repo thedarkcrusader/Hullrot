@@ -44,6 +44,7 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
     public const int chunkEntityMinimum = 16;
 
     // Not needed to be a class rn , but in the future should be expanded to hold separate lists for fast query of constantly looked categories.
+    // You also really dont want these to be stored as actual structs
     public class HullrotChunk
     {
         public HashSet<EntityUid> containedEntities = new(chunkEntityMinimum);
@@ -55,7 +56,7 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
     {
         // the starting point of this chunk
         public Vector2 bottomLeft;
-        // holds all the chunks. EMpty rows if there are none on that row.
+        // holds all the chunks. Empty rows if there are none on that row.
         public List<List<HullrotChunk?>?> chunks = new(minimumRowSize);
 
         public Vector2 getChunkKey(ref Vector2 targetPos)
