@@ -437,8 +437,6 @@ public sealed partial class ShuttleConsoleSystem : SharedShuttleConsoleSystem
     {
         if (args.Anchored)
         {
-
-
             if (HasComp<DynamicCodeHolderComponent>(args.Transform.GridUid))
             {
                 component.accesState = ShuttleConsoleAccesState.NoAcces;
