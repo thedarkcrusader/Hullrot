@@ -21,8 +21,12 @@ furnished to do so, subject to the following conditions:
    DEALINGS IN THE SOFTWARE.
 
 */
+
+using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using Robust.Server.GameObjects;
+using Robust.Shared.Map;
 
 
 namespace Content.Server._Crescent.Physics;
@@ -32,6 +36,8 @@ namespace Content.Server._Crescent.Physics;
 /// </summary>
 public sealed class HullrotEntityChunkSystem : EntitySystem
 {
+    [Dependency] private readonly IMapManager _mapManager = default!;
+    [Dependency] private readonly TransformSystem _transformSystem = default!;
     // Size of the side a chunk in the world map. It is a square. The smaller it is the better queries/intersection/rays calculation get.
     // The smaller it is , the more frequent memory movements/allocations get though.
     // 4x4 strikes a nice balance in my opinion.
@@ -42,6 +48,8 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
     public const int minimumRowSize = chunkManagerSectorSize / chunkSize;
     // Minimum entity list size of a chunk. Setting this to a sensible value prevents constant resizes!
     public const int chunkEntityMinimum = 16;
+    // All chunk managers regarding the WORLD. Grids get their own chunk managers in their own components.
+    public required FrozenDictionary<MapId, List<HullrotChunkManager>> chunkManagers;
 
     // Not needed to be a class rn , but in the future should be expanded to hold separate lists for fast query of constantly looked categories.
     // You also really dont want these to be stored as actual structs
@@ -95,6 +103,11 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
     /// <inheritdoc/>
     public override void Initialize()
     {
+        Dictionary<MapId, List<HullrotChunkManager>> buildingDict = new();
+        foreach (var map in _mapManager.GetAllMapIds())
+        {
+            buildingDict.Add(map, new List<HullrotChunkManager>());
+        }
 
     }
 }
