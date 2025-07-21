@@ -1,4 +1,8 @@
-namespace Content.Server._Crescent.SpaceArtillery;
+using Content.Shared.DeviceLinking;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom.Prototype;
+
+
+namespace Content.Shared._Crescent.SpaceArtillery;
 
 
 /// <summary>
@@ -18,4 +22,7 @@ public sealed partial class CannonComponent : Component
     // maximum speed the cannon can handle , if you go above this it will blow the cannon
     [DataField]
     public float MaximumSpeed = 450;
+
+    [DataField("spaceArtilleryFirePort", customTypeSerializer: typeof(PrototypeIdSerializer<SinkPortPrototype>))]
+    public string SpaceArtilleryFirePort = "SpaceArtilleryFire";
 }
