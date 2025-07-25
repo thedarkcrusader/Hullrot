@@ -76,6 +76,23 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
             return (targetPos - bottomLeft) / chunkSize;
         }
 
+        public void Dispose()
+        {
+            foreach (var chunkList in chunks)
+            {
+                if (chunkList is null)
+                    continue;
+                foreach (var chunk in chunkList)
+                {
+                    if (chunk is null)
+                        continue;
+                    chunk.containedEntities.Clear();
+                }
+                chunkList.Clear();
+            }
+            chunks.Clear();
+        }
+
         public bool getChunk(Vector2 targetPos, [NotNullWhen(true)] out HullrotChunk? chunk)
         {
             chunk = null;
@@ -113,6 +130,11 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
 
     public void OnEntityMove(ref MoveEvent input)
     {
+        // idk why this gets sent but ss14 sucks god damn - SPCR 2025
+        if (TerminatingOrDeleted(input.Entity.Owner))
+            return;
+        if (TerminatingOrDeleted(input.OldPosition.EntityId) || TerminatingOrDeleted(input.NewPosition.EntityId))
+            return;
         MapId oldMap = _transformSystem.GetMapId(input.OldPosition);
         MapId newMap = _transformSystem.GetMapId(input.NewPosition);
         HullrotChunkManager oldManager = chunkManagers[oldMap];
@@ -136,7 +158,7 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
 
     }
 
-    private void onMapCreation(ref MapChangedEvent args)
+    private void onMapCreation(MapChangedEvent args)
     {
         Dictionary<MapId, HullrotChunkManager> buildingDict = chunkManagers.ToDictionary();
         if(args.Created)
@@ -144,8 +166,8 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
         if(args.Destroyed)
         {
             HullrotChunkManager manager = buildingDict[args.Map];
-            manag
             buildingDict.Remove(args.Map);
+            manager.Dispose();
         }
         chunkManagers = buildingDict.ToFrozenDictionary();
     }
