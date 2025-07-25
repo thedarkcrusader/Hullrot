@@ -48,15 +48,21 @@
     mask: ClothingMaskImperialCombatGasmask
     jumpsuit: ClothingUniformJumpsuitImperialSurgeon
     outerClothing: ClothingOuterArmorImperialTrooperArmor
-    shoes: ClothingShoesBootsImperialLaceup
+    shoes: ClothingShoesBootsMagDSM
     belt: ClothingBeltAssaultFilledMedic
+    eyes: ClothingEyesHudMedSec
     gloves: ClothingHandsGlovesImperialLonggloves
-    pocket1: EmergencyOxygenTankFilled
-    pocket2: GrenadeShrapnel
+    pocket1: DoubleEmergencyOxygenTankFilled
+    pocket2: GrenadeFlashBang
     ears: ClothingHeadsetEmpire
     id: SurgeonPDA
     suitstorage: WeaponPistolNeoVolker
     back: ClothingBackpackSatchelMedical
-  inhand:
-    - Defibrillator
-    - MedkitAdvancedFilled
+    inhand:
+    - BookUnionfallDSMGuide
+  storage:
+    back:
+      - DefibrillatorCompact
+      - VoidsuitKitDSM
+      - BoxFlare
+      - BoxMRE
