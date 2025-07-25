@@ -66,13 +66,17 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
     public class HullrotChunkManager : IDisposable
     {
         // the starting point of this chunk
-        public Vector2 bottomLeft;
+        public Vector2 bottomLeft = new Vector2(-chunkManagerSectorSize/2, chunkManagerSectorSize/2);
 
         // holds all the chunks. Empty rows if there are none on that row.
         public List<List<HullrotChunk?>?> chunks = new(minimumRowSize);
 
         public Vector2 getChunkKey(Vector2 targetPos)
         {
+            if(targetPos.X - bottomLeft.X > chunkManagerSectorSize)
+                return Vector2.Zero;
+            if(targetPos.Y - bottomLeft.Y > chunkManagerSectorSize)
+                return Vector2.Zero;
             return (targetPos - bottomLeft) / chunkSize;
         }
 
