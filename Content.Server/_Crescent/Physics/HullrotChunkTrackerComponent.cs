@@ -11,5 +11,4 @@ namespace Content.Server._Crescent.Physics;
 public sealed partial class HullrotChunkTrackerComponent : Component
 {
     public Vector2 positionKey;
-    public Box2 chunkBounds;
 }

@@ -1,6 +1,6 @@
 /*
 MIT
-Copyright (c) 2025 MLGTASTICa
+Copyright (c) 2025 MLGTASTICa/SPCR
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to deal
@@ -24,19 +24,22 @@ furnished to do so, subject to the following conditions:
 
 using System.Collections.Frozen;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Numerics;
 using Robust.Server.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
 
 
 namespace Content.Server._Crescent.Physics;
 
 /// <summary>
-/// This handles...
+/// This handles map and grid chunking.
 /// </summary>
 public sealed class HullrotEntityChunkSystem : EntitySystem
 {
     [Dependency] private readonly IMapManager _mapManager = default!;
+    [Dependency] private readonly MapSystem _mapSystem = default!;
     [Dependency] private readonly TransformSystem _transformSystem = default!;
     // Size of the side a chunk in the world map. It is a square. The smaller it is the better queries/intersection/rays calculation get.
     // The smaller it is , the more frequent memory movements/allocations get though.
@@ -49,7 +52,7 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
     // Minimum entity list size of a chunk. Setting this to a sensible value prevents constant resizes!
     public const int chunkEntityMinimum = 16;
     // All chunk managers regarding the WORLD. Grids get their own chunk managers in their own components.
-    public required FrozenDictionary<MapId, List<HullrotChunkManager>> chunkManagers;
+    public FrozenDictionary<MapId, HullrotChunkManager> chunkManagers = new Dictionary<MapId, HullrotChunkManager>().ToFrozenDictionary();
 
     // Not needed to be a class rn , but in the future should be expanded to hold separate lists for fast query of constantly looked categories.
     // You also really dont want these to be stored as actual structs
@@ -60,25 +63,26 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
 
     // One of these is at worst 2 GB. You shouldn't have the need for multiple 64km X 64km maps though.
     // Each row has 16000 chunks , so it takes 0.128 MB to represent. So the minimum usage is exactly that
-    public class HullrotChunkManager
+    public class HullrotChunkManager : IDisposable
     {
         // the starting point of this chunk
         public Vector2 bottomLeft;
+
         // holds all the chunks. Empty rows if there are none on that row.
         public List<List<HullrotChunk?>?> chunks = new(minimumRowSize);
 
-        public Vector2 getChunkKey(ref Vector2 targetPos)
+        public Vector2 getChunkKey(Vector2 targetPos)
         {
-            return (targetPos - bottomLeft)/chunkSize;
+            return (targetPos - bottomLeft) / chunkSize;
         }
 
-        public bool getChunk(Vector2 targetPos,[NotNullWhen(true)] out HullrotChunk? chunk)
+        public bool getChunk(Vector2 targetPos, [NotNullWhen(true)] out HullrotChunk? chunk)
         {
             chunk = null;
-            Vector2 truePos = getChunkKey(ref targetPos);
+            Vector2 truePos = getChunkKey(targetPos);
             if (chunks[(int) truePos.X] is null)
                 return false;
-            if(chunks[(int) truePos.X]![(int) truePos.Y] is null)
+            if (chunks[(int) truePos.X]![(int) truePos.Y] is null)
                 return false;
             chunk = chunks[(int) truePos.X]![(int) truePos.Y]!;
             return true;
@@ -87,27 +91,70 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
         // will initialize a chunk if it doesn't exist.
         public HullrotChunk initializeChunk(Vector2 targetPos)
         {
-            Vector2 truePos = getChunkKey(ref targetPos);
+            Vector2 truePos = getChunkKey(targetPos);
             if (chunks[(int) truePos.X] is null)
             {
                 chunks[(int) truePos.X] = new List<HullrotChunk?>(minimumRowSize);
             }
+
             if (chunks[(int) truePos.X]![(int) truePos.Y] is null)
             {
                 chunks[(int) truePos.X]![(int) truePos.Y] = new HullrotChunk();
             }
+
             return chunks[(int) truePos.X]![(int) truePos.Y]!;
         }
+    }
+
+    public Vector2 EntityCoordToWorld(EntityCoordinates input)
+    {
+        return _transformSystem.GetWorldPosition(input.EntityId) + input.Position;
+    }
+
+    public void OnEntityMove(ref MoveEvent input)
+    {
+        MapId oldMap = _transformSystem.GetMapId(input.OldPosition);
+        MapId newMap = _transformSystem.GetMapId(input.NewPosition);
+        HullrotChunkManager oldManager = chunkManagers[oldMap];
+        HullrotChunkManager newManager = chunkManagers[newMap];
+        Vector2 oldKey = oldManager.getChunkKey( EntityCoordToWorld(input.OldPosition));
+        Vector2 newKey = newManager.getChunkKey(EntityCoordToWorld(input.NewPosition));
+        // SAME POSITION
+        if (oldMap == newMap && oldKey == newKey)
+            return;
+        if (oldManager.getChunk(oldKey, out var oldChunk))
+        {
+            oldChunk.containedEntities.Remove(input.Entity.Owner);
+        }
+
+        if (!newManager.getChunk(newKey, out var newChunk))
+        {
+            newChunk = newManager.initializeChunk(newKey);
+        }
+        newChunk.containedEntities.Add(input.Entity.Owner);
+        Logger.Debug($"Moved Entity {input.Entity} from chunk {oldKey} to {newKey}");
+
+    }
+
+    private void onMapCreation(ref MapChangedEvent args)
+    {
+        Dictionary<MapId, HullrotChunkManager> buildingDict = chunkManagers.ToDictionary();
+        if(args.Created)
+            buildingDict.Add(args.Map, new HullrotChunkManager());
+        if(args.Destroyed)
+        {
+            HullrotChunkManager manager = buildingDict[args.Map];
+            manag
+            buildingDict.Remove(args.Map);
+        }
+        chunkManagers = buildingDict.ToFrozenDictionary();
     }
 
     /// <inheritdoc/>
     public override void Initialize()
     {
-        Dictionary<MapId, List<HullrotChunkManager>> buildingDict = new();
-        foreach (var map in _mapManager.GetAllMapIds())
-        {
-            buildingDict.Add(map, new List<HullrotChunkManager>());
-        }
-
+        SubscribeLocalEvent<MapChangedEvent>(onMapCreation);
+        // create chunk managers for any map
+        _transformSystem.OnGlobalMoveEvent += OnEntityMove;
     }
 }
