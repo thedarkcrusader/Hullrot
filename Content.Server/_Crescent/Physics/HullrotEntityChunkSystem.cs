@@ -66,18 +66,18 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
     public class HullrotChunkManager : IDisposable
     {
         // the starting point of this chunk
-        public Vector2 bottomLeft = new Vector2(-chunkManagerSectorSize/2, chunkManagerSectorSize/2);
+        public Vector2 bottomLeft = new Vector2(-chunkManagerSectorSize/2, -chunkManagerSectorSize/2);
 
         // holds all the chunks. Empty rows if there are none on that row.
-        public List<List<HullrotChunk?>?> chunks = new(minimumRowSize);
+        public List<List<HullrotChunk?>?> chunks = new List<List<HullrotChunk?>?>(new List<HullrotChunk?>?[minimumRowSize]);
 
         public Vector2 getChunkKey(Vector2 targetPos)
         {
-            if(targetPos.X - bottomLeft.X > chunkManagerSectorSize)
+            if(targetPos.X - bottomLeft.X > chunkManagerSectorSize || targetPos.X - bottomLeft.X < 0)
                 return Vector2.Zero;
-            if(targetPos.Y - bottomLeft.Y > chunkManagerSectorSize)
+            if(targetPos.Y - bottomLeft.Y > chunkManagerSectorSize || targetPos.Y - bottomLeft.Y < 0)
                 return Vector2.Zero;
-            return (targetPos - bottomLeft) / chunkSize;
+            return ((targetPos - bottomLeft) / chunkSize).Rounded();
         }
 
         public void Dispose()
@@ -115,7 +115,7 @@ public sealed class HullrotEntityChunkSystem : EntitySystem
             Vector2 truePos = getChunkKey(targetPos);
             if (chunks[(int) truePos.X] is null)
             {
-                chunks[(int) truePos.X] = new List<HullrotChunk?>(minimumRowSize);
+                chunks[(int) truePos.X] = new List<HullrotChunk?> (new HullrotChunk?[minimumRowSize]);
             }
 
             if (chunks[(int) truePos.X]![(int) truePos.Y] is null)
