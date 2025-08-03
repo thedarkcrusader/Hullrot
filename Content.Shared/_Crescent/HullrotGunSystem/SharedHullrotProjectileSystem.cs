@@ -54,7 +54,7 @@ public abstract class SharedHullrotProjectileSystem : EntitySystem
         outputComp = (projectile, projectileComp);
         return true;
     }
-    
+
 
 
 
