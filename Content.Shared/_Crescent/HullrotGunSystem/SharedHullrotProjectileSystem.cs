@@ -26,6 +26,7 @@ public abstract class SharedHullrotProjectileSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _gameTiming = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private readonly SharedHullrotGunSystem _hullGuns = default!;
     //[Dependency] private readonly EntityManager _entityManager = default!;
     public List<Entity<HullrotProjectileComponent>> Projectiles = new List<Entity<HullrotProjectileComponent>>();
     public List<Entity<HullrotProjectileComponent>> FireNextTick =  new List<Entity<HullrotProjectileComponent>>();
@@ -41,28 +42,6 @@ public abstract class SharedHullrotProjectileSystem : EntitySystem
     {
         FireNextTick.Add(projectile);
         projectileQueued(projectile);
-    }
-
-    public bool getProjectile(EntityUid shooter, Entity<HullrotGunComponent> gun, Entity<HullrotBulletComponent> bullet,[NotNullWhen(true)] out Entity<HullrotProjectileComponent>? outputComp)
-    {
-        outputComp = null;
-        EntityUid projectile = Spawn(bullet.Comp.projectileEntity.ToString(), MapCoordinates.Nullspace);
-        if (!TryComp<HullrotProjectileComponent>(projectile, out var projectileComp))
-            return false;
-        projectileComp.firedFrom = gun.Owner;
-        projectileComp.shotBy = shooter;
-        outputComp = (projectile, projectileComp);
-        return true;
-    }
-
-
-
-
-
-    public void queueProjectile(EntityUid shooter, Entity<HullrotGunComponent> gun, Vector2 targetPos)
-    {
-        if(!getProjectile(shooter, gun, out var projectile))
-            return;
     }
 
     public void queueProjectile(EntityUid shooter, Entity<HullrotGunComponent> gun, EntityCoordinates targetPos);
