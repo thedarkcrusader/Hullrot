@@ -53,10 +53,13 @@ public abstract class SharedHullrotGunSystem : EntitySystem
         Entity<HullrotProjectileComponent> projectile = projectileNullable.Value;
         if (_mapManager.TryFindGridAt(mapCoords, out var gridUid, out var gridComp))
         {
-            _mapSystem.CoordinatesToTile(gridUid, gridComp, mapCoords);
-            projectile.Comp.aimedPosition = new EntityCoordinates(gridUid, targetPos);
+            Vector2i tileIndices = _mapSystem.CoordinatesToTile(gridUid, gridComp, mapCoords);
+            projectile.Comp.aimedPosition = new EntityCoordinates(gridUid, tileIndices);
         }
-        projectile.Comp.aimedPosition = new EntityCoordinates(gun.Owner, targetPos);
+        else
+        {
+            projectile.Comp.aimedPosition = _transformSystem.ToCoordinates(mapCoords);
+        }
     }
 
     public override void Initialize()
