@@ -60,7 +60,7 @@ public abstract class SharedHullrotGunSystem : EntitySystem
         {
             projectile.Comp.aimedPosition = _transformSystem.ToCoordinates(mapCoords);
         }
-    }
+    }w
 
     public override void Initialize()
     {
