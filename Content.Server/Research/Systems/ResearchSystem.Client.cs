@@ -62,9 +62,16 @@ public sealed partial class ResearchSystem
         {
             allServers.Add((serverUid, serverComp));
         }
-
-        if (allServers.Count > 0)
-            RegisterClient(uid, allServers[0], component, allServers[0]);
+        // hullrot edit - dont take servers from other grids! - SPCR 2025
+        var selfGridId = Transform(uid).GridUid;
+        foreach (var server in allServers)
+        {
+            if (Transform(server).GridUid != selfGridId)
+                continue;
+            RegisterClient(uid, server, component, server);
+            break;
+        }
+        // hullrot edit end
     }
 
     private void OnClientShutdown(EntityUid uid, ResearchClientComponent component, ComponentShutdown args)
