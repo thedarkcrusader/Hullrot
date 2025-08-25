@@ -38,11 +38,12 @@ public abstract class SharedHullrotGunSystem : EntitySystem
     public bool getProjectileChambered(EntityUid shooter, Entity<HullrotGunComponent> gun,[NotNullWhen(true)] out Entity<HullrotProjectileComponent>? outputComp)
     {
         outputComp = null;
-        if (!gun.Comp.ammoProvider.getAmmo(out var chambered))
+        if (!gun.Comp.ammoProvider.getAmmo(out var chambered, out var slot))
             return false;
         if (!TryComp<HullrotBulletComponent>(chambered, out var bulletComp))
             return false;
         EntityUid projectile = Spawn(bulletComp.projectileEntity.ToString(), MapCoordinates.Nullspace);
+        _itemSlotsSystem.TryEject(gun, slot, null, out var ejected);
         if (!TryComp<HullrotProjectileComponent>(projectile, out var projectileComp))
             return false;
         projectileComp.firedFrom = gun.Owner;
@@ -80,7 +81,7 @@ public abstract class SharedHullrotGunSystem : EntitySystem
             provider = chambered;
             return true;
         }
-        if (TryComp<HullrotGunAmmoMagazineComponent>(from, out var magazine))
+        if (TryComp<HullrotGunAmmoMagazineChamberComponent>(from, out var magazine))
         {
             provider = magazine;
             return true;

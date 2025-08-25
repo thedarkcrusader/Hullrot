@@ -39,7 +39,6 @@ public abstract partial class HullrotGunProviderComponent : Component
 [RegisterComponent]
 public partial class HullrotGunAmmoChamberComponent : HullrotGunProviderComponent
 {
-    /// Hullrot additions
     [DataField("bulletSlot")]
     public ItemSlot bulletSlot = new();
 
