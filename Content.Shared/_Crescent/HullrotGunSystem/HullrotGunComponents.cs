@@ -15,13 +15,16 @@ namespace Content.Shared._Crescent.HullrotGunSystem;
 public sealed partial class HullrotGunComponent : Component
 {
     // bullet sets their own speed , gun can only influence it
+    [DataField]
     public float SpeedMultiplier = 1;
 
     // bullets per second
+    [DataField]
     public float FireRate = 6;
     public int shootingPosIndex = 0;
+    [DataField]
     public List<Vector2> shootingPosOffsets = new List<Vector2>();
-    public HullrotGunProviderComponent ammoProvider;
+    public HullrotGunProviderComponent ammoProvider = default!;
 
     public Vector2 getShootingOffset()
     {
@@ -66,7 +69,9 @@ public sealed partial class HullrotGunAmmoMagazineChamberComponent : HullrotGunP
 public sealed partial class HullrotBulletComponent : Component
 {
     // meters per second.
+    [DataField]
     public float Speed = 100;
+    [DataField]
     public EntityPrototype projectileEntity;
 }
 

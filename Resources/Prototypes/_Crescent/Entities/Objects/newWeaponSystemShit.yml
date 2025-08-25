@@ -1,0 +1,66 @@
+- type: entity
+  name: Hullrot Gun
+  parent: BaseItem
+  id: WeaponHullrot
+  description: A rooty tooty point and shooty.
+  abstract: true
+  components:
+  - type: Sprite
+  - type: Item
+    size: Large
+  - type: Clothing
+    sprite: _Crescent/Objects/Weapons/Guns/atreides.rsi
+    quickEquip: false
+    slots:
+    - Back
+    - suitStorage
+  - type: HullrotGun
+  - type: HullrotGunAmmoChamber
+    bulletSlot:
+      name: Chamber
+      startingItem: MagazinePistolSubMachineGun
+      insertSound: /Audio/Weapons/Guns/MagIn/smg_magin.ogg
+      ejectSound: /Audio/Weapons/Guns/MagOut/smg_magout.ogg
+      priority: 2
+      whitelist:
+        components:
+          - HullrotBullet
+  - type: ItemSlots
+  - type: ContainerContainer
+    containers:
+      gun_magazine: !type:ContainerSlot
+      gun_chamber: !type:ContainerSlot
+  - type: StaticPrice
+    price: 500
+  - type: MeleeWeapon
+    attackRate: 1.3333
+    damage:
+      types:
+        Blunt: 9.0
+    bluntStaminaDamageFactor: 1.25
+    swapKeys: true
+    disableHeavy: true
+    animation: WeaponArcThrust
+    wideAnimationRotation: 180
+    soundHit:
+      collection: MetalThud
+  - type: IncreaseDamageOnWield
+    damage:
+      types:
+        Blunt: 2.5
+  - type: DamageOtherOnHit
+    staminaCost: 8
+
+- type: entity
+  name: Hullrot Bullet
+  parent: BaseItem
+  id: BulletHullrot
+  description: A rooty tooty point and shooty.
+  abstract: true
+  components:
+  - type: Sprite
+  - type: Item
+    size: Large
+  - type: HullrotBullet
+    speed: 25
+    projectileEntity:
