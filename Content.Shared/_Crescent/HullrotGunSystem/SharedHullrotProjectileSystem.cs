@@ -2,6 +2,7 @@
 using System.Numerics;
 using Content.Shared.Weapons.Ranged.Components;
 using Robust.Shared.Map;
+using Robust.Shared.Physics.Systems;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 
@@ -24,9 +25,10 @@ public class HullrotProjectileFiredEvent : EntityEventArgs
 /// </summary>
 public abstract class SharedHullrotProjectileSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _gameTiming = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedHullrotGunSystem _hullGuns = default!;
+    [Dependency] protected readonly IGameTiming _gameTiming = default!;
+    [Dependency] protected readonly SharedTransformSystem _transform = default!;
+    [Dependency] protected readonly SharedHullrotGunSystem _hullGuns = default!;
+    [Dependency] protected readonly SharedPhysicsSystem _physics = default!;
     //[Dependency] private readonly EntityManager _entityManager = default!;
     public List<Entity<HullrotProjectileComponent>> Projectiles = new List<Entity<HullrotProjectileComponent>>();
     public List<Entity<HullrotProjectileComponent>> FireNextTick =  new List<Entity<HullrotProjectileComponent>>();
@@ -43,8 +45,6 @@ public abstract class SharedHullrotProjectileSystem : EntitySystem
         FireNextTick.Add(projectile);
         projectileQueued(projectile);
     }
-
-    public void queueProjectile(EntityUid shooter, Entity<HullrotGunComponent> gun, EntityCoordinates targetPos);
     public abstract void projectileQueued(Entity<HullrotProjectileComponent> projectile);
     public abstract void processProjectiles(float deltaTime);
     public override void Update(float  deltaTime)

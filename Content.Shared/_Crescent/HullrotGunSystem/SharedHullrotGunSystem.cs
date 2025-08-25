@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using Content.Shared.Containers.ItemSlots;
+using Content.Shared.Interaction;
 using Robust.Shared.Map;
 
 
@@ -15,6 +17,10 @@ public abstract class SharedHullrotGunSystem : EntitySystem
     [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
     [Dependency] private readonly EntityLookupSystem _lookupSystem = default!;
     [Dependency] private readonly IMapManager _mapManager = default!;
+    [Dependency] private readonly SharedHullrotProjectileSystem _projectileSystem = default!;
+    [Dependency] private readonly LogManager _logManager = default!;
+    [Dependency] private readonly ItemSlotsSystem _itemSlotsSystem = default!;
+    private ISawmill _sawmill = default!;
     public bool getProjectile(EntityUid shooter, Entity<HullrotGunComponent> gun, Entity<HullrotBulletComponent> bullet,[NotNullWhen(true)] out Entity<HullrotProjectileComponent>? outputComp)
     {
         outputComp = null;
@@ -24,15 +30,17 @@ public abstract class SharedHullrotGunSystem : EntitySystem
         projectileComp.firedFrom = gun.Owner;
         projectileComp.shotBy = shooter;
         projectileComp.initialMovement = new Vector2(bullet.Comp.Speed * gun.Comp.SpeedMultiplier, bullet.Comp.Speed * gun.Comp.SpeedMultiplier);
+        projectileComp.initialPosition = new EntityCoordinates(gun.Owner, 0, 0);
         outputComp = (projectile, projectileComp);
         return true;
     }
+
     public bool getProjectileChambered(EntityUid shooter, Entity<HullrotGunComponent> gun,[NotNullWhen(true)] out Entity<HullrotProjectileComponent>? outputComp)
     {
         outputComp = null;
-        if (gun.Comp.chambered is null)
+        if (!gun.Comp.ammoProvider.getAmmo(out var chambered))
             return false;
-        if (!TryComp<HullrotBulletComponent>(gun.Comp.chambered, out var bulletComp))
+        if (!TryComp<HullrotBulletComponent>(chambered, out var bulletComp))
             return false;
         EntityUid projectile = Spawn(bulletComp.projectileEntity.ToString(), MapCoordinates.Nullspace);
         if (!TryComp<HullrotProjectileComponent>(projectile, out var projectileComp))
@@ -40,11 +48,12 @@ public abstract class SharedHullrotGunSystem : EntitySystem
         projectileComp.firedFrom = gun.Owner;
         projectileComp.shotBy = shooter;
         projectileComp.initialMovement = new Vector2(bulletComp.Speed * gun.Comp.SpeedMultiplier, bulletComp.Speed * gun.Comp.SpeedMultiplier);
+        projectileComp.initialPosition = new EntityCoordinates(gun.Owner, 0, 0);
         outputComp = (projectile, projectileComp);
         return true;
     }
 
-    public void fireProjectile(EntityUid shooter, Entity<HullrotGunComponent> gun, Vector2 targetPos)
+    public void fireGun(EntityUid shooter, Entity<HullrotGunComponent> gun, Vector2 targetPos)
     {
         if(!getProjectileChambered(shooter, gun, out var projectileNullable))
             return;
@@ -60,10 +69,44 @@ public abstract class SharedHullrotGunSystem : EntitySystem
         {
             projectile.Comp.aimedPosition = _transformSystem.ToCoordinates(mapCoords);
         }
-    }w
+        _projectileSystem.queueProjectile(projectile);
+    }
+
+    public bool tryGetProvider(EntityUid from,[NotNullWhen(true)] out HullrotGunProviderComponent? provider)
+    {
+        provider = null;
+        if (TryComp<HullrotGunAmmoChamberComponent>(from, out var chambered))
+        {
+            provider = chambered;
+            return true;
+        }
+        if (TryComp<HullrotGunAmmoMagazineComponent>(from, out var magazine))
+        {
+            provider = magazine;
+            return true;
+        }
+        return false;
+    }
+
+    public void onGunInitialized(Entity<HullrotGunComponent> gun, ref ComponentInit args)
+    {
+        if (!tryGetProvider(gun.Owner, out var provider))
+        {
+            _sawmill.Error($"Gun prototype {MetaData(gun.Owner).EntityPrototype} does not have any GunAmmo components to fetch ammo from!");
+            return;
+        }
+        gun.Comp.ammoProvider = provider;
+    }
+
+    public void onChamberInitialized(Entity<HullrotGunAmmoChamberComponent> chamber, ref ComponentInit args)
+    {
+        _itemSlotsSystem.AddItemSlot(chamber.Owner, chamber.Comp.bulletSlot.Name, chamber.Comp.bulletSlot);
+    }
 
     public override void Initialize()
     {
-
+        SubscribeLocalEvent<HullrotGunComponent, ComponentInit>(onGunInitialized);
+        SubscribeLocalEvent<HullrotGunAmmoChamberComponent, ComponentInit>(onChamberInitialized);
+        _sawmill = _logManager.GetSawmill("HullrotGunSystem");
     }
 }

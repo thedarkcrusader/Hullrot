@@ -21,8 +21,10 @@ public sealed partial class HullrotProjectileComponent : Component
     // relative-based on grids or the world map so it
     // remains accurate to the true target
     public EntityCoordinates aimedPosition;
-    // initial movement
+    // initial movement to apply when firing
     public Vector2 initialMovement;
+    // initial pos to fire from on tick
+    public EntityCoordinates initialPosition;
 
 }
 

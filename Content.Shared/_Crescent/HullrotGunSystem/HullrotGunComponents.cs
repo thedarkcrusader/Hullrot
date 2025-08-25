@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
+using Content.Shared.Containers.ItemSlots;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
@@ -20,7 +21,6 @@ public sealed partial class HullrotGunComponent : Component
     public float FireRate = 6;
     public int shootingPosIndex = 0;
     public List<Vector2> shootingPosOffsets = new List<Vector2>();
-    public EntityUid? chambered = null;
     public HullrotGunProviderComponent ammoProvider;
 
     public Vector2 getShootingOffset()
@@ -33,33 +33,33 @@ public sealed partial class HullrotGunComponent : Component
 
 public abstract partial class HullrotGunProviderComponent : Component
 {
-    public abstract bool getAmmo([NotNullWhen(true)] out EntityUid? ammo);
+    public abstract bool getAmmo([NotNullWhen(true)] out EntityUid? ammo,  out ItemSlot slot);
 };
 
 [RegisterComponent]
 public partial class HullrotGunAmmoChamberComponent : HullrotGunProviderComponent
 {
-    public EntityUid? bullet;
+    /// Hullrot additions
+    [DataField("bulletSlot")]
+    public ItemSlot bulletSlot = new();
 
-    public override bool getAmmo([NotNullWhen(true)] out EntityUid? ammo)
+    public override bool getAmmo([NotNullWhen(true)] out EntityUid? ammo, out ItemSlot slot)
     {
-        ammo = bullet;
-        return bullet is not null;
+        ammo = bulletSlot.Item;
+        slot = bulletSlot;
+        return bulletSlot.HasItem;
     }
 }
 [RegisterComponent]
-public sealed partial class HullrotGunAmmoMagazineComponent : HullrotGunProviderComponent
+public sealed partial class HullrotGunAmmoMagazineChamberComponent : HullrotGunProviderComponent
 {
-    public Queue<EntityUid> bullets = new Queue<EntityUid>();
-    public override bool getAmmo([NotNullWhen(true)] out EntityUid? ammo)
+    [DataField("bulletSlot")]
+    public ItemSlot magazineSlot = new();
+    public override bool getAmmo([NotNullWhen(true)] out EntityUid? ammo,  out ItemSlot slot)
     {
-        if (bullets.Count == 0)
-        {
-            ammo = null;
-            return false;
-        }
-        ammo = bullets.Dequeue();
-        return true;
+        ammo = magazineSlot.Item;
+        slot = magazineSlot;
+        return magazineSlot.HasItem;
     }
 }
 
@@ -69,6 +69,12 @@ public sealed partial class HullrotBulletComponent : Component
     // meters per second.
     public float Speed = 100;
     public EntityPrototype projectileEntity;
+}
 
+[RegisterComponent]
+public sealed partial class HullrotMagazineComponent : Component
+{
+    public ItemSlot topBulletSlot = new();
+    public Queue<EntityUid> loadedBullets = new();
 }
 
