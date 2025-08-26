@@ -72,7 +72,7 @@ public sealed partial class HullrotBulletComponent : Component
     [DataField]
     public float Speed = 100;
     [DataField]
-    public EntityPrototype projectileEntity;
+    public EntProtoId projectileEntity = default!;
 }
 
 [RegisterComponent]

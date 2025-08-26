@@ -13,14 +13,17 @@ namespace Content.Shared._Crescent.HullrotGunSystem;
 /// </summary>
 public abstract class SharedHullrotGunSystem : EntitySystem
 {
+
     [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly SharedTransformSystem _transformSystem = default!;
     [Dependency] private readonly EntityLookupSystem _lookupSystem = default!;
     [Dependency] private readonly IMapManager _mapManager = default!;
     [Dependency] private readonly SharedHullrotProjectileSystem _projectileSystem = default!;
-    [Dependency] private readonly LogManager _logManager = default!;
+    [Dependency] private readonly ILogManager _logManager = default!;
     [Dependency] private readonly ItemSlotsSystem _itemSlotsSystem = default!;
     private ISawmill _sawmill = default!;
+
+    private const string ammoChamberContainerName = "Hullrot_Ammo_Chamber";
     public bool getProjectile(EntityUid shooter, Entity<HullrotGunComponent> gun, Entity<HullrotBulletComponent> bullet,[NotNullWhen(true)] out Entity<HullrotProjectileComponent>? outputComp)
     {
         outputComp = null;
@@ -101,7 +104,7 @@ public abstract class SharedHullrotGunSystem : EntitySystem
 
     public void onChamberInitialized(Entity<HullrotGunAmmoChamberComponent> chamber, ref ComponentInit args)
     {
-        _itemSlotsSystem.AddItemSlot(chamber.Owner, chamber.Comp.bulletSlot.Name, chamber.Comp.bulletSlot);
+        _itemSlotsSystem.AddItemSlot(chamber.Owner, ammoChamberContainerName, chamber.Comp.bulletSlot);
     }
 
     public override void Initialize()

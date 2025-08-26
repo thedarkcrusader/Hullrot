@@ -14,6 +14,7 @@ public sealed class ClientHullrotGunSystem : SharedHullrotGunSystem
     /// <inheritdoc/>
     public override void Initialize()
     {
+        base.Initialize();
         SubscribeLocalEvent<HullrotGunComponent, RangedInteractEvent>(TryUseGun);
     }
 

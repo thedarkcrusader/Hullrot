@@ -3,9 +3,14 @@
   parent: BaseItem
   id: WeaponHullrot
   description: A rooty tooty point and shooty.
-  abstract: true
   components:
   - type: Sprite
+    sprite: _Crescent/Objects/Weapons/Guns/atreides.rsi
+    layers:
+    - state: base
+      map: ["enum.GunVisualLayers.Base"]
+    - state: mag-0
+      map: ["enum.GunVisualLayers.Mag"]
   - type: Item
     size: Large
   - type: Clothing
@@ -18,7 +23,6 @@
   - type: HullrotGunAmmoChamber
     bulletSlot:
       name: Chamber
-      startingItem: MagazinePistolSubMachineGun
       insertSound: /Audio/Weapons/Guns/MagIn/smg_magin.ogg
       ejectSound: /Audio/Weapons/Guns/MagOut/smg_magout.ogg
       priority: 2
@@ -56,11 +60,13 @@
   parent: BaseItem
   id: BulletHullrot
   description: A rooty tooty point and shooty.
-  abstract: true
   components:
   - type: Sprite
+    noRot: false
+    sprite: Objects/Weapons/Guns/Projectiles/projectiles2.rsi
+    state: slug
   - type: Item
     size: Large
   - type: HullrotBullet
     speed: 25
-    projectileEntity:
+    projectileEntity: BulletAntiMaterielShrapnel

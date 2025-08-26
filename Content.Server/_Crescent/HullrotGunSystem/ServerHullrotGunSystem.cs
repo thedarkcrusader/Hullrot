@@ -15,6 +15,7 @@ public sealed class ServerHullrotGunSystem : SharedHullrotGunSystem
     [Dependency] private readonly PlayerRateLimitManager _playerRateLimitManager = default!;
     public override void Initialize()
     {
+        base.Initialize();
         SubscribeNetworkEvent<ClientSideGunFiredEvent>(OnClientFireGun);
     }
 
