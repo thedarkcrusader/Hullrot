@@ -47,12 +47,11 @@ public abstract class SharedHullrotGunSystem : EntitySystem
             return false;
         EntityUid projectile = Spawn(bulletComp.projectileEntity.ToString(), MapCoordinates.Nullspace);
         _itemSlotsSystem.TryEject(gun, slot, null, out var ejected);
-        if (!TryComp<HullrotProjectileComponent>(projectile, out var projectileComp))
-            return false;
+        var projectileComp = EnsureComp<HullrotProjectileComponent>(projectile);
         projectileComp.firedFrom = gun.Owner;
         projectileComp.shotBy = shooter;
         projectileComp.initialMovement = new Vector2(bulletComp.Speed * gun.Comp.SpeedMultiplier, bulletComp.Speed * gun.Comp.SpeedMultiplier);
-        projectileComp.initialPosition = new EntityCoordinates(gun.Owner, 0, 0);
+        projectileComp.initialPosition = new EntityCoordinates(shooter, 0, 0);
         outputComp = (projectile, projectileComp);
         return true;
     }

@@ -1,4 +1,5 @@
-﻿using Content.Shared._Crescent.HullrotGunSystem;
+﻿using Content.Client._Crescent.Framework;
+using Content.Shared._Crescent.HullrotGunSystem;
 using Content.Shared.Interaction;
 using Robust.Shared.Map;
 
@@ -15,7 +16,7 @@ public sealed class ClientHullrotGunSystem : SharedHullrotGunSystem
     public override void Initialize()
     {
         base.Initialize();
-        SubscribeLocalEvent<HullrotGunComponent, RangedInteractEvent>(TryUseGun);
+        SubscribeLocalEvent<HullrotGunComponent, UsingMouseDownEvent>(TryUseGun);
     }
 
     public void onEmptyShootAttempt()
@@ -28,7 +29,7 @@ public sealed class ClientHullrotGunSystem : SharedHullrotGunSystem
 
     }
 
-    public void TryUseGun(Entity<HullrotGunComponent> gun, ref RangedInteractEvent args)
+    public void TryUseGun(Entity<HullrotGunComponent> gun, ref UsingMouseDownEvent args)
     {
         if (!gun.Comp.ammoProvider.getAmmo(out var bullet, out var itemSlot))
         {
@@ -36,18 +37,18 @@ public sealed class ClientHullrotGunSystem : SharedHullrotGunSystem
             return;
         }
 
-        if (!TryComp<HullrotProjectileComponent>(bullet, out var chambered))
+        if (!TryComp<HullrotBulletComponent>(bullet, out var chambered))
         {
             onInvalidShootAttempt();
             return;
         }
 
-        fireGun(args.UserUid, gun, args.ClickLocation.Position);
+        fireGun(args.user, gun, args.clickCoords.Position);
         RaiseNetworkEvent(new ClientSideGunFiredEvent()
         {
-            aimedPosition = GetNetCoordinates(args.ClickLocation),
+            aimedPosition = GetNetCoordinates(args.clickCoords),
             gun = GetNetEntity(gun),
-            shooter = GetNetEntity(args.UserUid)
+            shooter = GetNetEntity(args.user)
         });
 
     }

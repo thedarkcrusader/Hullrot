@@ -69,4 +69,20 @@
     size: Large
   - type: HullrotBullet
     speed: 25
-    projectileEntity: BulletAntiMaterielShrapnel
+    projectileEntity: ProjectileHullrot
+
+- type: entity
+  id: ProjectileHullrot
+  name: bullet (15.2×169 mm shrapnel)
+  categories: [ HideSpawnMenu ]
+  parent: BaseBullet
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Projectiles/projectiles2.rsi
+    state: buckshot-flare
+  - type: Projectile
+    damage:
+      types:
+        Piercing: 3
+    harmorPenetration: 25
+    stoppingPower: 2
