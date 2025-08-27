@@ -24,8 +24,9 @@ public sealed class ServerHullrotGunSystem : SharedHullrotGunSystem
         EntityUid gun = GetEntity(args.gun);
         EntityUid shooter = GetEntity(args.shooter);
         EntityCoordinates targetCoordinates = GetCoordinates(args.aimedPosition);
+        EntityCoordinates firingCoordinates = GetCoordinates(args.shotFrom);
         if (!TryComp<HullrotGunComponent>(gun, out var gunComp))
             return;
-        fireGun(shooter, (gun, gunComp), targetCoordinates.Position);
+        fireGun(shooter, (gun, gunComp), firingCoordinates, targetCoordinates.Position);
     }
 }

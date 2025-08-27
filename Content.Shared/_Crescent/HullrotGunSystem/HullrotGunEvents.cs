@@ -9,5 +9,6 @@ public class ClientSideGunFiredEvent : EntityEventArgs
 {
     public NetEntity gun;
     public NetEntity shooter;
+    public NetCoordinates shotFrom;
     public NetCoordinates aimedPosition;
 }

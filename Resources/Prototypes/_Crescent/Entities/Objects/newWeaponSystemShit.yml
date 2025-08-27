@@ -20,6 +20,7 @@
     - Back
     - suitStorage
   - type: HullrotGun
+  - type: HullrotHandheldGun
   - type: HullrotGunAmmoChamber
     bulletSlot:
       name: Chamber

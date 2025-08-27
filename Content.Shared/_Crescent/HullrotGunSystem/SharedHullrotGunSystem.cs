@@ -45,7 +45,9 @@ public abstract class SharedHullrotGunSystem : EntitySystem
             return false;
         if (!TryComp<HullrotBulletComponent>(chambered, out var bulletComp))
             return false;
-        EntityUid projectile = Spawn(bulletComp.projectileEntity.ToString(), MapCoordinates.Nullspace);
+        EntityUid projectile;
+        if(!IsClientSide()
+            projectile = bulletComp.projectileEntity.ToString(), MapCoordinates.Nullspace);
         _itemSlotsSystem.TryEject(gun, slot, null, out var ejected);
         var projectileComp = EnsureComp<HullrotProjectileComponent>(projectile);
         projectileComp.firedFrom = gun.Owner;
@@ -55,13 +57,14 @@ public abstract class SharedHullrotGunSystem : EntitySystem
         return true;
     }
 
-    public void fireGun(EntityUid shooter, Entity<HullrotGunComponent> gun, Vector2 targetPos)
+    public void fireGun(EntityUid shooter, Entity<HullrotGunComponent> gun, EntityCoordinates shootingFrom, Vector2 targetPos)
     {
         if(!getProjectileChambered(shooter, gun, out var projectileNullable))
             return;
         var map = _transformSystem.GetMapId(gun.Owner);
         MapCoordinates mapCoords = new MapCoordinates(_transformSystem.GetWorldPosition(gun.Owner) + targetPos, map);
         Entity<HullrotProjectileComponent> projectile = projectileNullable.Value;
+        projectile.Comp.initialPosition = shootingFrom;
         if (_mapManager.TryFindGridAt(mapCoords, out var gridUid, out var gridComp))
         {
             Vector2i tileIndices = _mapSystem.CoordinatesToTile(gridUid, gridComp, mapCoords);
