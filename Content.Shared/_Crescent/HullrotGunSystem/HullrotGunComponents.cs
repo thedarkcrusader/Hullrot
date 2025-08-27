@@ -33,6 +33,11 @@ public sealed partial class HullrotGunComponent : Component
         return shootingPosOffsets[shootingPosIndex++];
     }
 };
+[RegisterComponent]
+public sealed partial class HullrotHandheldGunComponent : Component
+{
+
+}
 
 public abstract partial class HullrotGunProviderComponent : Component
 {

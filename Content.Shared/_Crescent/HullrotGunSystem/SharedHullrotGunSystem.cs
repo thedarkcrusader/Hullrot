@@ -51,7 +51,6 @@ public abstract class SharedHullrotGunSystem : EntitySystem
         projectileComp.firedFrom = gun.Owner;
         projectileComp.shotBy = shooter;
         projectileComp.initialMovement = new Vector2(bulletComp.Speed * gun.Comp.SpeedMultiplier, bulletComp.Speed * gun.Comp.SpeedMultiplier);
-        projectileComp.initialPosition = new EntityCoordinates(shooter, 0, 0);
         outputComp = (projectile, projectileComp);
         return true;
     }
