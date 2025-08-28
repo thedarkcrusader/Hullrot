@@ -1,0 +1,44 @@
+- type: entity
+  parent: BaseItem
+  id: ResearchStealer
+  name: R&D hijacker
+  description: Exploits known vulnerabilities to download research nodes from a server, corrupting the data in the process. Must be used in close range on a server.
+  components:
+    - type: Sprite
+      sprite: _Crescent/Objects/Devices/research_stealer.rsi
+      state: thief
+    - type: ResearchStealerDevice
+
+- type: entity
+  parent: BaseItem
+  id: ResearchDrive
+  name: research drive
+  description: A repurposed thumbdrive to hold research data. Inserting this into a server will give you the research stored on it.
+  components:
+    - type: Sprite
+      sprite: _Crescent/Objects/Misc/salvagedisksmall.rsi/
+      state: icon
+    - type: ResearchNodeDisk
+    - type: EmitSoundOnPickup
+      sound: /Audio/SimpleStation14/Items/Handling/disk_pickup.ogg
+    - type: EmitSoundOnDrop
+      sound: /Audio/SimpleStation14/Items/Handling/disk_drop.ogg
+    - type: EmitSoundOnLand
+      sound: /Audio/SimpleStation14/Items/Handling/disk_drop.ogg
+
+- type: entity
+  parent: BaseItem
+  id: ResearchStealerPatchDisk
+  name: research server firmware update disk
+  description: A diskette containing a crucial firmware update for research servers. Inserting this into a server will patch it against the vulneribilities exploited by most common hijackers.
+  components:
+    - type: Sprite
+      sprite: _Crescent/Objects/Misc/techdisks.rsi/
+      state: ncwl
+    - type: ResearchServerPatchApplicator
+    - type: EmitSoundOnPickup
+      sound: /Audio/SimpleStation14/Items/Handling/disk_pickup.ogg
+    - type: EmitSoundOnDrop
+      sound: /Audio/SimpleStation14/Items/Handling/disk_drop.ogg
+    - type: EmitSoundOnLand
+      sound: /Audio/SimpleStation14/Items/Handling/disk_drop.ogg

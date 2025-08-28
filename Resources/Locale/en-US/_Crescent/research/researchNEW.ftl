@@ -145,3 +145,8 @@ research-technology-shinohara-gilgamesh = mR-815 Prototype Exosuit
 research-technology-shinohara-ballisticfab = TF-22 Armaments Foundry
 research-technology-shinohara-dermalarmor = KOURINDO-U Dermal Armor
 research-technology-shinohara-shiverblade = SHI-RIP9 Shiver Blade
+
+research-stealer-success = Successfully stolen node {$research}
+research-stealer-fail = This server is patched; you can't steal any technologies from it!
+
+research-patcher-fail = This server is already patched!
