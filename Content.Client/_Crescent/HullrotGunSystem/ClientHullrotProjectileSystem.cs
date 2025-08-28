@@ -1,7 +1,9 @@
-﻿using Content.Client.Projectiles;
+﻿using Content.Client._Crescent.Framework;
+using Content.Client.Projectiles;
 using Content.Shared._Crescent.HullrotGunSystem;
 using Robust.Client.GameObjects;
 using Robust.Client.Physics;
+using Robust.Shared.Physics.Components;
 
 
 namespace Content.Client._Crescent.HullrotGunSystem;

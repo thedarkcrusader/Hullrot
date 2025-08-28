@@ -45,9 +45,7 @@ public abstract class SharedHullrotGunSystem : EntitySystem
             return false;
         if (!TryComp<HullrotBulletComponent>(chambered, out var bulletComp))
             return false;
-        EntityUid projectile;
-        if(!IsClientSide()
-            projectile = bulletComp.projectileEntity.ToString(), MapCoordinates.Nullspace);
+        EntityUid projectile = Spawn(bulletComp.projectileEntity.ToString(), MapCoordinates.Nullspace);
         _itemSlotsSystem.TryEject(gun, slot, null, out var ejected);
         var projectileComp = EnsureComp<HullrotProjectileComponent>(projectile);
         projectileComp.firedFrom = gun.Owner;
