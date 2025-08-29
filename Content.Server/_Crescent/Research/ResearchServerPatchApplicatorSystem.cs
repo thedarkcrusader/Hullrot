@@ -12,7 +12,7 @@ using Content.Shared._Crescent.Research;
 
 namespace Content.Server._Crescent.Research;
 
-public abstract class ResearchServerPatchApplicatorSystem : EntitySystem
+public sealed class ResearchServerPatchApplicatorSystem : EntitySystem
 {
 
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
@@ -24,7 +24,7 @@ public abstract class ResearchServerPatchApplicatorSystem : EntitySystem
         SubscribeLocalEvent<ResearchServerPatchApplicatorComponent, PatchApplicatorDoAfterFinishEvent>(OnPatchApplicatorDoAfter);
     }
 
-    protected virtual void OnAfterInteract(EntityUid uid, ResearchServerPatchApplicatorComponent component, AfterInteractEvent args)
+    private void OnAfterInteract(EntityUid uid, ResearchServerPatchApplicatorComponent component, AfterInteractEvent args)
     {
         if (!args.CanReach)
             return;
@@ -38,7 +38,7 @@ public abstract class ResearchServerPatchApplicatorSystem : EntitySystem
             return;
         }
 
-        DoAfterArgs doAfterArguments = new DoAfterArgs(EntityManager, args.User, component.ApplicationTime, new PatchApplicatorDoAfterFinishEvent(args.Used), args.Target, args.Target)
+        DoAfterArgs doAfterArguments = new DoAfterArgs(EntityManager, args.User, component.ApplicationTime, new PatchApplicatorDoAfterFinishEvent(), uid, uid)
         {
             BreakOnDamage = true,
             BreakOnMove = true,
@@ -47,7 +47,7 @@ public abstract class ResearchServerPatchApplicatorSystem : EntitySystem
         _doAfter.TryStartDoAfter(doAfterArguments, null);
     }
 
-    protected virtual void OnPatchApplicatorDoAfter(EntityUid uid, ResearchServerPatchApplicatorComponent component, PatchApplicatorDoAfterFinishEvent args)
+    private void OnPatchApplicatorDoAfter(EntityUid uid, ResearchServerPatchApplicatorComponent component, PatchApplicatorDoAfterFinishEvent args)
     {
         if (args.Cancelled || !args.Args.Target.HasValue || !TryComp<ResearchServerComponent>(args.Args.Target.Value, out var server))
             return;
@@ -65,18 +65,5 @@ public abstract class ResearchServerPatchApplicatorSystem : EntitySystem
 
         if (!component.Reusable)
             QueueDel(uid);
-    }
-}
-
-/// <summary>
-/// rah
-/// </summary>
-public sealed partial class PatchApplicatorDoAfterFinishEvent : SimpleDoAfterEvent
-{
-    public EntityUid DiskEntity;
-
-    public PatchApplicatorDoAfterFinishEvent(EntityUid diskEntity)
-    {
-        DiskEntity = diskEntity;
     }
 }

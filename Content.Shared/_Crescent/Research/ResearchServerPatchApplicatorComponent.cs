@@ -1,4 +1,6 @@
+using Content.Shared.DoAfter;
 using Robust.Shared.GameStates;
+using Robust.Shared.Serialization;
 
 namespace Content.Shared._Crescent.Research;
 
@@ -11,4 +13,14 @@ public sealed partial class ResearchServerPatchApplicatorComponent : Component
 
     [DataField, ViewVariables]
     public bool Reusable = false;
+}
+
+
+/// <summary>
+/// rah
+/// </summary>
+
+[Serializable, NetSerializable]
+public sealed partial class PatchApplicatorDoAfterFinishEvent : SimpleDoAfterEvent
+{
 }
