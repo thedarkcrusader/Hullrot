@@ -1218,7 +1218,15 @@
         - Needler60
         - MagazineVulcan
         - MagazineFlak
+        - 48mmEMPRocket
+        - 48mmHighYieldRocket
+        - 48mmLowYieldRocket
+        - RocketMagazineEmpty
         #Hullrot edit start
+        - DrumMagazineShotgunSlug
+        - DrumMagazineShotgunEmpty
+        - DrumMagazineShotgunBuck
+        - MagazineSmgSmartgun
         - MagazineHeavyRifleBoxmag
         - MagazinePistolHeavy
         - MagazineBoxHeavyPistol
